@@ -1,0 +1,38 @@
+package com.example.proyecto_mobiles.adapter
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.proyecto_mobiles.R
+import com.example.proyecto_mobiles.model.ItemList
+
+import kotlinx.android.synthetic.main.itemslist_view.view.*
+
+class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adapter<RecyclerAdapter.RecycleHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecycleHolder {
+        val itemView=LayoutInflater.from(parent.context).inflate(R.layout.itemslist_view,
+        parent, false)
+        return RecycleHolder(itemView)
+    }
+
+    override fun onBindViewHolder(holder: RecycleHolder, position: Int) {
+        val currentItem = itemsList[position]
+
+        holder.imgItem.setImageResource(currentItem.imagen)
+        holder.txtRestaurante.text=currentItem.restaurante
+        holder.txtDescripcion.text=currentItem.descripcion
+    }
+
+    override fun getItemCount() = itemsList.size
+
+    class RecycleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imgItem: ImageView = itemView.iv_restaurante
+        val txtRestaurante: TextView = itemView.txt_resturante
+        val txtDescripcion: TextView = itemView.txt_descripcion
+
+    }
+}

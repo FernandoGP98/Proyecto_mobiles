@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Proyecto_mobiles</string>
+
+    <string name="search_hint">Busca Tacos</string>
 </resources>

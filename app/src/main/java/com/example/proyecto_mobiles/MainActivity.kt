@@ -17,6 +17,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, usuario_registro::class.java)
             startActivity(intent)
         }
+
+        val btnIngresar : TextView = findViewById(R.id.btn_ingresar)
+        btnIngresar.setOnClickListener {
+            val intent = Intent(this, home::class.java)
+            startActivity(intent)
+        }
     }
 
 }

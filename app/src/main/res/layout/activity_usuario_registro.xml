@@ -64,11 +64,11 @@
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btn_registrar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:layout_marginBottom="46dp"
+        android:layout_marginBottom="28dp"
         android:text="Registrar" />
 
     <LinearLayout
@@ -85,7 +85,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/txt_iniciaSesion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
