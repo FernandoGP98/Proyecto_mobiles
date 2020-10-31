@@ -1,18 +1,24 @@
 package com.example.proyecto_mobiles
 
 import android.content.ClipData
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
+import android.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_mobiles.adapter.RecyclerAdapter
 import com.example.proyecto_mobiles.model.ItemList
+import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_home.*
 
 class home : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
 
         val lista = generateDummyList(50)
 
@@ -29,4 +35,5 @@ class home : AppCompatActivity() {
         }
         return list
     }
+
 }

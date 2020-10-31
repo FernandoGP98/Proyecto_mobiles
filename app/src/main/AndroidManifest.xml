@@ -12,9 +12,12 @@
         <activity android:name=".comentarios"></activity>
         <activity android:name=".favoritos" />
         <activity android:name=".perfil_configuracion" />
-        <activity android:name=".home" />
-        <activity android:name=".usuario_registro" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".home"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".usuario_registro"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
