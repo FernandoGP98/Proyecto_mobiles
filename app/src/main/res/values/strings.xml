@@ -2,4 +2,11 @@
     <string name="app_name">Proyecto_mobiles</string>
 
     <string name="search_hint">Busca Tacos</string>
+    <string name="navigation_draw_open">Open navigation draw</string>
+    <string name="navigation_draw_close">Close navigation draw</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="principal">Principal</string>
+    <string name="perfil">Perfil</string>
+    <string name="comentarios">Comentarios</string>
 </resources>
