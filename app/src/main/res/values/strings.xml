@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Proyecto_mobiles</string>
-
     <string name="search_hint">Busca Tacos</string>
     <string name="navigation_draw_open">Open navigation draw</string>
     <string name="navigation_draw_close">Close navigation draw</string>

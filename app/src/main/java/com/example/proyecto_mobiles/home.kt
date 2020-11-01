@@ -1,6 +1,7 @@
 package com.example.proyecto_mobiles
 
 import android.content.ClipData
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
@@ -12,11 +13,13 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.FragmentTransitionImpl
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_mobiles.adapter.RecyclerAdapter
 import com.example.proyecto_mobiles.model.ItemList
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_home.*
 
 class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
