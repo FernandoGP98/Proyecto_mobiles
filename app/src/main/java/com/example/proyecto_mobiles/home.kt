@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
+import android.view.View
+import android.widget.SearchView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -26,7 +28,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     lateinit var fragmentHome: fragment_home
     lateinit var fragmentPerfil: fragment_perfil
     lateinit var fragmentComentarios: fragment_comentarios
-
+    lateinit var fragmentNuevoLocal: fragment_nuevolocal
+    lateinit var search: androidx.appcompat.widget.SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +59,17 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             .beginTransaction()
             .replace(R.id.fragment_container, fragmentHome)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .addToBackStack(null)
             .commit()
+        search = findViewById(R.id.sv_BuscarGeneral)
+    }
+
+    fun View.cambiaVisibility(visible: Boolean) {
+        if (visible) {
+            visibility = View.VISIBLE
+        } else {
+            visibility = View.INVISIBLE
+        }
     }
 
     override fun onBackPressed() {
@@ -76,7 +89,9 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragmentHome)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack(null)
                     .commit()
+                search.cambiaVisibility(true)
             }
             R.id.nav_profile ->{
                 fragmentPerfil = fragment_perfil()
@@ -84,7 +99,9 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragmentPerfil)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack(null)
                     .commit()
+                search.cambiaVisibility(false)
             }
             R.id.nav_comment ->{
                 fragmentComentarios = fragment_comentarios()
@@ -92,7 +109,19 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragmentComentarios)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack(null)
                     .commit()
+                search.cambiaVisibility(true)
+            }
+            R.id.nav_nuevoLocal->{
+                fragmentNuevoLocal = fragment_nuevolocal()
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragmentNuevoLocal)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack(null)
+                    .commit()
+                search.cambiaVisibility(false)
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)

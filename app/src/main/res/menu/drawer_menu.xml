@@ -15,21 +15,27 @@
             android:title="@string/perfil" />
 
         <item
+            android:id="@+id/nav_favoritos"
+            android:icon="@drawable/ic_profile"
+            android:title="Locales favoritos" />
+
+        <item
             android:id="@+id/nav_comment"
             android:icon="@drawable/ic_comment"
-            android:title="@string/comentarios" />
+            android:title="Mis comentarios" />
+
+        <item
+            android:id="@+id/nav_nuevoLocal"
+            android:icon="@drawable/ic_comment"
+            android:title="Nuevo local" />
     </group>
 
-    <item android:title="Ejemplo Acciones">
+    <item android:title="Acciones">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_cerrarSesion"
                 android:icon="@drawable/ic_android_black_24dp"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_android_black_24dp"
-                android:title="Send" />
+                android:title="Cerrar sesion" />
         </menu>
     </item>
 </menu>

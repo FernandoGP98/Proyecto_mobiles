@@ -6,13 +6,17 @@ import android.view.ViewGroup
 
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_mobiles.R
+import com.example.proyecto_mobiles.fragment_info
 import com.example.proyecto_mobiles.model.ItemList
 
 import kotlinx.android.synthetic.main.itemslist_view.view.*
 
 class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adapter<RecyclerAdapter.RecycleHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecycleHolder {
         val itemView=LayoutInflater.from(parent.context).inflate(R.layout.itemslist_view,
         parent, false)
@@ -25,6 +29,18 @@ class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adap
         holder.imgItem.setImageResource(currentItem.imagen)
         holder.txtRestaurante.text=currentItem.restaurante
         holder.txtDescripcion.text=currentItem.descripcion
+        holder.itemView.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(v: View?){
+                val activity=v!!.context as AppCompatActivity
+                val fragmentInfo=fragment_info()
+                activity.supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragmentInfo)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        })
     }
 
     override fun getItemCount() = itemsList.size

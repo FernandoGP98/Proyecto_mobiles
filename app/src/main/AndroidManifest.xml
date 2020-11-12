@@ -9,13 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".comentarios"/>
-        <activity android:name=".favoritos" />
-        <activity android:name=".perfil_configuracion" />
+        <activity android:name=".comentarios"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".favoritos"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".perfil_configuracion"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".home"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".usuario_registro" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".usuario_registro"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
