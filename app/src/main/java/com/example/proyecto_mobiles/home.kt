@@ -59,7 +59,6 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             .beginTransaction()
             .replace(R.id.fragment_container, fragmentHome)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .addToBackStack(null)
             .commit()
         search = findViewById(R.id.sv_BuscarGeneral)
     }
@@ -89,7 +88,6 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragmentHome)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .addToBackStack(null)
                     .commit()
                 search.cambiaVisibility(true)
             }
