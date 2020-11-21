@@ -8,13 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proyecto_mobiles.adapter.ComentariosAdapter
-import com.example.proyecto_mobiles.adapter.RecyclerAdapter
 import com.example.proyecto_mobiles.model.ComentariosLista
-import kotlinx.android.synthetic.main.activity_comentarios.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.recycler_view
+import kotlinx.android.synthetic.main.fragment_info.*
+import kotlin.random.Random
 
 class fragment_comentarios : Fragment() {
+
+    private val exampleList = generateDummyList(2)
+    private val adapter = ComentariosAdapter(exampleList)
 
     companion object {
         fun newInstance() = fragment_comentarios()
@@ -30,23 +32,30 @@ class fragment_comentarios : Fragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(FragmentComentariosViewModel::class.java)
 
-        val lista = generateDummyList(50)
-
-        recycler_view.adapter= ComentariosAdapter(lista)
-        recycler_view.layoutManager= LinearLayoutManager(context)
+        recycler_view.adapter = adapter
+        recycler_view.layoutManager = LinearLayoutManager(context)
         recycler_view.setHasFixedSize(true)
     }
 
-    private fun generateDummyList(size: Int): List<ComentariosLista>{
+    private fun generateDummyList(size: Int): ArrayList<ComentariosLista> {
+
         val list = ArrayList<ComentariosLista>()
-        for (i in 0 until size){
-            val item = ComentariosLista("$i Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.")
+
+        for (i in 0 until size) {
+            val item = ComentariosLista("Comentario $i", 2.0)
             list += item
         }
         return list
+    }
+
+    object prueba {
+        fun test(view: View, position:ComentariosLista) {
+            println("pos: $position")
+        }
     }
 
 }

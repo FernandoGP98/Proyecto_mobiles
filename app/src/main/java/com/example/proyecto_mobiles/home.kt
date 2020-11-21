@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.FragmentTransitionImpl
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_mobiles.adapter.RecyclerAdapter
@@ -24,12 +25,14 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_home.*
 
-class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
     lateinit var fragmentHome: fragment_home
     lateinit var fragmentPerfil: fragment_perfil
     lateinit var fragmentComentarios: fragment_comentarios
     lateinit var fragmentNuevoLocal: fragment_nuevolocal
-    lateinit var search: androidx.appcompat.widget.SearchView
+    lateinit var search: SearchView
+
+    var adapterList:RecyclerAdapter? =  null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +64,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
         search = findViewById(R.id.sv_BuscarGeneral)
+
+        this.sv_BuscarGeneral.setOnQueryTextListener(this)
     }
 
     fun View.cambiaVisibility(visible: Boolean) {
@@ -124,5 +129,27 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+
+    //DELEGATES DE SEARCH VIEW
+    override fun onQueryTextSubmit(p0: String?): Boolean {
+        //Cuando ya termino de buscar y le da enter
+        if (p0 != null){
+            Toast.makeText(this,"Submit ${p0}" ,   Toast.LENGTH_SHORT).show()
+        }
+
+        return false
+    }
+
+    override fun onQueryTextChange(p0: String?): Boolean {
+        //Cuando va cambiando el texto
+        if (p0 != null){
+            //Toast.makeText(this@MainActivity, "TextChange ${p0}",   Toast.LENGTH_SHORT).show()
+            if (adapterList != null)  this.adapterList?.filter?.filter(p0)
+
+        }
+
+        return false
     }
 }
