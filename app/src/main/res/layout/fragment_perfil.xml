@@ -1,29 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBack"
     android:orientation="vertical"
     tools:context=".fragment_perfil">
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:text="Perfil"
-        android:textSize="25dp"
-        android:textColor="#000000"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:background="@android:color/black" />
+        android:background="@color/colorPrimary" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -41,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Cambiar Nombre"
+                android:textColor="@color/colorText"
                 android:textSize="25dp" />
 
             <EditText
@@ -50,7 +42,9 @@
                 android:layout_marginTop="15dp"
                 android:ems="10"
                 android:hint="Nombre"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@color/colorText"
+                android:textColorHint="@color/colorHint" />
 
             <Button
                 android:id="@+id/buttonPerfil1"
@@ -58,7 +52,9 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="Cambiar" />
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Cambiar"
+                android:textColor="@color/colorText" />
 
             <View
                 android:layout_width="match_parent"
@@ -73,6 +69,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="Cambiar Contraseña"
+                android:textColor="@color/colorText"
                 android:textSize="25dp" />
 
             <EditText
@@ -82,7 +79,9 @@
                 android:layout_marginTop="15dp"
                 android:ems="10"
                 android:hint="Contraseña nueva"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@color/colorText"
+                android:textColorHint="@color/colorHint" />
 
             <EditText
                 android:id="@+id/editTextContra2"
@@ -91,7 +90,9 @@
                 android:layout_marginTop="15dp"
                 android:ems="10"
                 android:hint="Repetir Contraseña"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@color/colorText"
+                android:textColorHint="@color/colorHint" />
 
             <Button
                 android:id="@+id/buttonPerfil2"
@@ -99,7 +100,9 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="Cambiar" />
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Cambiar"
+                android:textColor="@color/colorText" />
 
             <View
                 android:layout_width="match_parent"
@@ -114,6 +117,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="Imagen"
+                android:textColor="@color/colorText"
                 android:textSize="25dp" />
 
             <LinearLayout
@@ -140,21 +144,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                <Button
-                    android:id="@+id/buttonIMAGEN"
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="15dp"
-                    android:text="BUSCAR" />
 
-                <Button
-                    android:id="@+id/buttonIMAGENAct"
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="15dp"
-                    android:text="ACTUALIZAR" />
+                    <Button
+                        android:id="@+id/buttonIMAGEN"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="15dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="BUSCAR"
+                        android:textColor="#ffffff" />
+
+                    <Button
+                        android:id="@+id/buttonIMAGENAct"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="15dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="ACTUALIZAR"
+                        android:textColor="#ffffff" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -171,6 +180,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="Cambiar tipo de Cuenta"
+                android:textColor="@color/colorText"
                 android:textSize="25dp" />
 
             <Button
@@ -179,33 +189,41 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="Cambiar"
-                android:layout_marginBottom="10dp"/>
+                android:textColor="@color/colorText" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/radioG"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/radioButton1"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="Consumidor" />
 
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:text="Dueño de Tienda" />
-            </RadioGroup>
-        </LinearLayout>
+                <RadioGroup
+                    android:id="@+id/radioG"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radioButton1"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorPrimary"
+                        android:text="Consumidor"
+                        android:textColor="@color/colorText" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton2"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="30dp"
+                        android:buttonTint="@color/colorPrimary"
+                        android:text="Dueño de Tienda"
+                        android:textColor="@color/colorText" />
+                </RadioGroup>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

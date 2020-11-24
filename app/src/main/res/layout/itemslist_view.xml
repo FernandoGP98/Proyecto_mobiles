@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
+    app:cardBackgroundColor="@color/cardview_dark_background"
     app:cardCornerRadius="5dp"
     app:cardElevation="10dp">
 
@@ -31,6 +32,7 @@
                 android:id="@+id/txt_resturante"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorText"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -38,6 +40,7 @@
                 android:id="@+id/txt_descripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorText"
                 android:textSize="12dp" />
         </LinearLayout>
     </LinearLayout>

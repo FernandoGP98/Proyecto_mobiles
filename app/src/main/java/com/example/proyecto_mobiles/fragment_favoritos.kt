@@ -1,22 +1,19 @@
 package com.example.proyecto_mobiles
 
-import android.os.Bundle
-import android.view.*
-import android.widget.SearchView
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proyecto_mobiles.adapter.ComentariosAdapter
 import com.example.proyecto_mobiles.adapter.RecyclerAdapter
 import com.example.proyecto_mobiles.model.ComentariosLista
 import com.example.proyecto_mobiles.model.ItemList
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home.recycler_view
-import kotlinx.android.synthetic.main.fragment_info.*
 
-class fragment_home : Fragment(){
+class fragment_favoritos : Fragment() {
 
     var imagenesDB = arrayListOf<Int>(                                                                ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
         R.drawable.img_local1,
@@ -48,30 +45,24 @@ class fragment_home : Fragment(){
     var itemList: List<Int> = ArrayList()
 
     companion object {
-        fun newInstance() = fragment_home()
+        fun newInstance() = fragment_favoritos()
     }
 
-    private lateinit var viewModel: FragmentHomeViewModel
+    private lateinit var viewModel: FragmentFavoritosViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        viewOfLayout = inflater!!.inflate(R.layout.fragment_home, container, false)
-
-        return viewOfLayout
+        return inflater.inflate(R.layout.fragment_favoritos, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(FragmentHomeViewModel::class.java)
-
+        viewModel = ViewModelProviders.of(this).get(FragmentFavoritosViewModel::class.java)
         recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(context)
         recycler_view.setHasFixedSize(true)
-
     }
 
     private fun generateDummyList(size: Int): ArrayList<ItemList> {
@@ -85,8 +76,7 @@ class fragment_home : Fragment(){
             list += item
         }
         return list
-}
-
+    }
     private fun LlenaLista(value: Int) {
 
         imagenes.addAll(imagenesDB)

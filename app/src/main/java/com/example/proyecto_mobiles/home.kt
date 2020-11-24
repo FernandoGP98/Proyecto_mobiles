@@ -25,9 +25,10 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_home.*
 
-class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
+class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener, androidx.appcompat.widget.SearchView.OnQueryTextListener {
     lateinit var fragmentHome: fragment_home
     lateinit var fragmentPerfil: fragment_perfil
+    lateinit var fragmentFavoritos: fragment_favoritos
     lateinit var fragmentComentarios: fragment_comentarios
     lateinit var fragmentNuevoLocal: fragment_nuevolocal
     lateinit var search: SearchView
@@ -40,7 +41,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
-        actionBar?.title= ""
+        actionBar?.title= "Principal"
 
         var toggle: ActionBarDrawerToggle = object: ActionBarDrawerToggle(
             this,
@@ -94,6 +95,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .replace(R.id.fragment_container, fragmentHome)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
+                val actionBar = supportActionBar
+                actionBar?.title= "Principal"
                 search.cambiaVisibility(true)
             }
             R.id.nav_profile ->{
@@ -104,7 +107,21 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .addToBackStack(null)
                     .commit()
+                val actionBar = supportActionBar
+                actionBar?.title= "Perfil"
                 search.cambiaVisibility(false)
+            }
+            R.id.nav_favoritos->{
+                fragmentFavoritos = fragment_favoritos()
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragmentFavoritos)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack(null)
+                    .commit()
+                val actionBar = supportActionBar
+                actionBar?.title= "Favoritos"
+                search.cambiaVisibility(true)
             }
             R.id.nav_comment ->{
                 fragmentComentarios = fragment_comentarios()
@@ -114,6 +131,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .addToBackStack(null)
                     .commit()
+                val actionBar = supportActionBar
+                actionBar?.title= "Mis comentarios"
                 search.cambiaVisibility(true)
             }
             R.id.nav_nuevoLocal->{
@@ -124,6 +143,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .addToBackStack(null)
                     .commit()
+                val actionBar = supportActionBar
+                actionBar?.title= "Nuevo Local"
                 search.cambiaVisibility(false)
             }
         }
