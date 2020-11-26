@@ -21,9 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_mobiles.adapter.RecyclerAdapter
 import com.example.proyecto_mobiles.model.ItemList
+import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.nav_header.*
+import org.w3c.dom.Text
 
 class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener, androidx.appcompat.widget.SearchView.OnQueryTextListener {
     lateinit var fragmentHome: fragment_home
@@ -58,6 +61,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
         nav_view.setNavigationItemSelectedListener(this)
 
+
         fragmentHome = fragment_home()
         supportFragmentManager
             .beginTransaction()
@@ -67,6 +71,16 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         search = findViewById(R.id.sv_BuscarGeneral)
 
         this.sv_BuscarGeneral.setOnQueryTextListener(this)
+
+        /*PARA PODER USAR ELEMENTOS DENTRO DE DEL SIDEBAR HAY QUE INICIALIZAR LA NAVBAR
+        * Y ASI ACCEDER A ESOS ELEMENTOS
+        * SI NO AL INTENTAR CAMBIAR ALGUNO DE SUS VALORES RESULTARA EN NULLO Y CRASHEA LA APP*/
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val navHeader = navView.getHeaderView(0)
+        val lbl_correo = navHeader.findViewById(R.id.lbl_correo) as TextView
+        val lbl_username = navHeader.findViewById(R.id.lbl_username)as TextView
+        lbl_correo.text = ses.getMail()
+        lbl_username.text = ses.getName()
     }
 
     fun View.cambiaVisibility(visible: Boolean) {
@@ -146,6 +160,10 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 val actionBar = supportActionBar
                 actionBar?.title= "Nuevo Local"
                 search.cambiaVisibility(false)
+            }
+            R.id.nav_cerrarSesion->{
+                ses.wipe()
+                onBackPressed()
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
