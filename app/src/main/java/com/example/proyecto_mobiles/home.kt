@@ -163,7 +163,9 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             }
             R.id.nav_cerrarSesion->{
                 ses.wipe()
+                drawer_layout.closeDrawer(GravityCompat.START)
                 onBackPressed()
+                finish()
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
