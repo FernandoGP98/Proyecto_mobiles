@@ -6,13 +6,21 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 import kotlinx.android.synthetic.main.activity_usuario_registro.*
+import org.json.JSONObject
 
 class usuario_registro : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,13 +74,13 @@ class usuario_registro : AppCompatActivity() {
                     } else {
                         contrasenaFinal = contrasenaV1
                         println("the value is $contrasenaFinal")
-
-                        ses.saveMail(correo)
+                        UsuarioRegistro(correo)
 
                         dialogBuilder.setMessage("Registro Completo")
                             .setCancelable(false)
                             .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
                                 //closeKeyboard()
+                                ses.saveMail(correo)
                                 finish()
                                 irHome()
                             })
@@ -102,6 +110,28 @@ class usuario_registro : AppCompatActivity() {
     fun irHome(){
         val intent = Intent(this, home::class.java)
         startActivity(intent)
+    }
+
+    private fun UsuarioRegistro(correo:String){
+        val queue = Volley.newRequestQueue(this)
+        val body = JSONObject()
+        body.put("texto", correo)
+        //load.startLoadingDialog()
+        //Handler().postDelayed({load.dismissDialog()}, 6000)
+        val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/registrarPrueba",body,{
+            response: JSONObject?->
+            val toast = Toast.makeText(this, "Texto registrado exitosamente", Toast.LENGTH_LONG)
+            toast.show()
+        }, { error ->
+            error.printStackTrace()
+            Log.e("Servicio web", "Web", error)
+            if(error.toString()=="com.android.volley.ServerError"){
+                val toast = Toast.makeText(this, "Error del servidor", Toast.LENGTH_LONG)
+                toast.show()
+            }
+        })
+        requ.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+        queue.add(requ)
     }
 
     /*fun closeKeyboard() {
