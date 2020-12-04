@@ -150,7 +150,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 search.cambiaVisibility(true)
             }
             R.id.nav_nuevoLocal->{
-                val intent = Intent(this, acivity_localNuevo::class.java)
+                val intent = Intent (this, acivity_localNuevo::class.java)
                 startActivity(intent)
                 /*fragmentNuevoLocal = fragment_nuevolocal()
                 supportFragmentManager

@@ -44,7 +44,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acivity_localNuevo"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:parentActivityName=".home"
+            android:theme="@style/AppTheme"
+            android:label="Agregar un nuevo local"/>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
