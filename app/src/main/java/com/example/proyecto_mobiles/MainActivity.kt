@@ -87,6 +87,8 @@ class MainActivity : AppCompatActivity() {
                 val usuario = usArray!!.getJSONObject(0)
                 ses.saveMail(usuario.getString("email"))
                 ses.saveName(usuario.getString("nombre"))
+                ses.savePass(usuario.getString("password"))
+                ses.saveRol(usuario.getInt("rol_id"))
                 val toast = Toast.makeText(this, "Bienvenido "+usuario.getString("nombre"), Toast.LENGTH_LONG)
                 toast.show()
                 irHome()

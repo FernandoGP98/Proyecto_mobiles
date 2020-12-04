@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_perfil.*
+import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 
 
 // Rename parameter arguments, choose names that match
@@ -69,9 +69,9 @@ class fragment_perfil : Fragment() {
         var contrasenaFinalNueva: String = "vacio"
 
         /*.llenado temporal simulando LA BASE DE DATOS.  Agregar variables*/
-        nombreL.setText("JUAN")
-        contra1L.setText("contra")
-        contra2L.setText("contra")
+        nombreL.setText(ses.getName())
+        contra1L.setText("ingrese contraseña nueva")
+        contra2L.setText("confirme contraseña")
         avatarL.setImageResource(R.drawable.avatar)
 
         //avatarL.setImageResource(R.drawable.mona)

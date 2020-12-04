@@ -122,17 +122,21 @@ class usuario_registro : AppCompatActivity() {
     }
 
     private fun UsuarioRegistro(correo:String, contrasenaV1:String){
+        val nombre = "usuario" + currentTimestamp.toString()
         val queue = Volley.newRequestQueue(this)
         val body = JSONObject()
         body.put("correo", correo)
         body.put("password", contrasenaV1)
-        body.put("nombre", "usuario" + currentTimestamp.toString())
+        body.put("nombre", nombre)
+        body.put("rol_id", 3)
         //load.startLoadingDialog()
         //Handler().postDelayed({load.dismissDialog()}, 6000)
         val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/UsuarioRegistrar",body,{
             response: JSONObject?->
             ses.saveMail(correo)
-            ses.saveName("usuario" + currentTimestamp.toString())
+            ses.savePass(contrasenaV1)
+            ses.saveName(nombre)
+            ses.saveRol(3)
             val toast = Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_LONG)
             toast.show()
         }, { error ->
