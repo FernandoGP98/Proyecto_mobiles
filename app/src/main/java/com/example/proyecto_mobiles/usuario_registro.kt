@@ -21,8 +21,16 @@ import com.android.volley.toolbox.Volley
 import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 import kotlinx.android.synthetic.main.activity_usuario_registro.*
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class usuario_registro : AppCompatActivity() {
+
+    var currentTimestamp:Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usuario_registro)
@@ -37,8 +45,8 @@ class usuario_registro : AppCompatActivity() {
         var Tcontrasenav2 : TextView = findViewById(R.id.txt_contasenaConfirmRegistro)
         var contrasenaFinal: String = "noName"                                                        // Variable que guarda la contrase;a
 
-
         btn_Registro.setOnClickListener {
+
             var correo: String = txt_correoRegistro.text.toString()                             // variable que guarda el nombre
             var contrasenaV1: String = txt_contrasenaRegistro.text.toString()
             var contrasenaV2: String = txt_contasenaConfirmRegistro.text.toString()
@@ -74,7 +82,8 @@ class usuario_registro : AppCompatActivity() {
                     } else {
                         contrasenaFinal = contrasenaV1
                         println("the value is $contrasenaFinal")
-                        UsuarioRegistro(correo)
+                        currentTimestamp = System.currentTimeMillis()
+                        UsuarioRegistro(correo, contrasenaV1)
 
                         dialogBuilder.setMessage("Registro Completo")
                             .setCancelable(false)
@@ -112,15 +121,19 @@ class usuario_registro : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun UsuarioRegistro(correo:String){
+    private fun UsuarioRegistro(correo:String, contrasenaV1:String){
         val queue = Volley.newRequestQueue(this)
         val body = JSONObject()
-        body.put("texto", correo)
+        body.put("correo", correo)
+        body.put("password", contrasenaV1)
+        body.put("nombre", "usuario" + currentTimestamp.toString())
         //load.startLoadingDialog()
         //Handler().postDelayed({load.dismissDialog()}, 6000)
-        val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/registrarPrueba",body,{
+        val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/UsuarioRegistrar",body,{
             response: JSONObject?->
-            val toast = Toast.makeText(this, "Texto registrado exitosamente", Toast.LENGTH_LONG)
+            ses.saveMail(correo)
+            ses.saveName("usuario" + currentTimestamp.toString())
+            val toast = Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_LONG)
             toast.show()
         }, { error ->
             error.printStackTrace()

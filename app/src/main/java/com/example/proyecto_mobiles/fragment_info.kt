@@ -3,6 +3,7 @@ package com.example.proyecto_mobiles
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +12,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.proyecto_mobiles.adapter.ComentariosAdapter
 import com.example.proyecto_mobiles.model.ComentariosLista
+import com.example.proyecto_mobiles.model.ItemList
 import com.synnapps.carouselview.CarouselView
 import com.synnapps.carouselview.ImageListener
 import kotlinx.android.synthetic.main.fragment_info.*
+import org.json.JSONObject
 import kotlin.random.Random
 
 
@@ -39,8 +46,14 @@ class fragment_info : Fragment() {
     var itemList: List<Int> = ArrayList()
     var index:Int = 2
 
+    var nombreLocal: String = ""
+    var descripcionLocal: String = ""
+    var calificacionBBB: String = ""
+
     private val exampleList = generateDummyList(2)
     private val adapter = ComentariosAdapter(exampleList)
+
+    var nombreRestaurante:String = usuarioSesion.ses.getRestaurante()
 
     var sampleImages = intArrayOf(R.drawable.img_local1,R.drawable.img_local2,R.drawable.img_local3)  ////ARREGLO DONDE SE GUARDAN LAS 3 IMAGENES A MOSTRAS EN LA VIEW
 
@@ -78,21 +91,59 @@ class fragment_info : Fragment() {
         val buttonValor: Button = viewOfLayout.findViewById(R.id.buttonValorar) as Button
         val buttonComentario: Button = viewOfLayout.findViewById(R.id.buttonComentar) as Button
 
+        val rateL: RatingBar = viewOfLayout.findViewById(R.id.ratingBarLocal) as RatingBar
+        val rate2L: RatingBar = viewOfLayout.findViewById(R.id.ratingBar2) as RatingBar
+
+        ////////////////////////////////////////////////
+
+        val queue = Volley.newRequestQueue(getActivity())
+        val parametros = JSONObject()
+        //load.startLoadingDialog()
+        //Handler().postDelayed({load.dismissDialog()}, 6000)
+        val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/RestaurantesGetAllPublicados",parametros,{
+                response: JSONObject?->
+            val usArray = response?.getJSONArray("restaurantes")
+            val success = response?.getInt("success")
+
+            for (i in 0..(usArray!!.length() - 1)) {
+                val item = usArray!!.getJSONObject(i)
+                if(nombreRestaurante == item.getString("nombre")) {
+
+                    nombreLocal = item.getString("nombre")
+                    descripcionLocal = item.getString("descripcion")
+                    calificacionBBB = item.getString("calificacion")
+                    nombreL.setText(nombreLocal)
+                    descripcionL.setText(descripcionLocal)
+                    rateL.setRating(calificacionBBB.toFloat())
+
+                }
+            }
+
+            if(success==0){
+                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
+                toast.show()
+            }
+        }, { error ->
+            error.printStackTrace()
+            Log.e("Servicio web", "Web", error)
+            if(error.toString()=="com.android.volley.ServerError"){
+                val toast = Toast.makeText(getActivity(), "Error del servidor", Toast.LENGTH_LONG)
+                toast.show()
+            }
+        })
+        requ.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+        queue.add(requ)
+
+        ////////////////////////////////////////////////////
+
 
         /*------------VARIABLES PARA LLENAR LA VIEW------------*/
-        var nombreLocal: String = "Restaurante Marciano"
-        var descripcionLocal: String = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+
 
         /*------------VARIABLES QUE SE OBTIENEN------------*/
         var valorLocal: Float
         var valorComentario: Double
         var comentario: String
-
-        nombreL.setText(nombreLocal)
-        descripcionL.setText(descripcionLocal)
-
-       val rateL: RatingBar = viewOfLayout.findViewById(R.id.ratingBarLocal) as RatingBar
-        val rate2L: RatingBar = viewOfLayout.findViewById(R.id.ratingBar2) as RatingBar
 
         buttonValor.setOnClickListener {
             valorLocal = rateL.rating                                                                      ///AQUI SE GUARDA LA VALORACION QUE SE DIO

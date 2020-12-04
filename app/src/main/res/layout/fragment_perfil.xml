@@ -137,6 +137,7 @@
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="0dp"
+                        android:scaleType="centerInside"
                         android:background="@drawable/avatar" />
                 </androidx.cardview.widget.CardView>
 
