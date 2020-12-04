@@ -8,4 +8,5 @@
     <string name="principal">Principal</string>
     <string name="perfil">Perfil</string>
     <string name="comentarios">Comentarios</string>
+    <string name="title_activity_local_nuevo">localNuevo</string>
 </resources>

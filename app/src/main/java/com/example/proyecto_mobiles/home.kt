@@ -150,7 +150,9 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 search.cambiaVisibility(true)
             }
             R.id.nav_nuevoLocal->{
-                fragmentNuevoLocal = fragment_nuevolocal()
+                val intent = Intent(this, acivity_localNuevo::class.java)
+                startActivity(intent)
+                /*fragmentNuevoLocal = fragment_nuevolocal()
                 supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragmentNuevoLocal)
@@ -159,7 +161,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .commit()
                 val actionBar = supportActionBar
                 actionBar?.title= "Nuevo Local"
-                search.cambiaVisibility(false)
+                search.cambiaVisibility(false)*/
             }
             R.id.nav_cerrarSesion->{
                 ses.wipe()

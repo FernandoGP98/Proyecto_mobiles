@@ -2,28 +2,51 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.proyecto_mobiles">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".usuarioSesion"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".usuarioSesion"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".comentarios"
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="false"/>
+
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name=".comentarios"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".favoritos"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".perfil_configuracion"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".usuario_registro"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acivity_localNuevo"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".favoritos"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".perfil_configuracion"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".home"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".usuario_registro"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,6 +55,5 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
 </manifest>
