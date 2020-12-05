@@ -1,8 +1,11 @@
 package com.example.proyecto_mobiles
 
+import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.Location
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,10 +15,18 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
+import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_local_nuevo.*
 import kotlinx.android.synthetic.main.activity_local_nuevo.IMGLocal1
 import kotlinx.android.synthetic.main.activity_local_nuevo.IMGLocal2
@@ -36,8 +47,11 @@ import java.net.URL
 import java.sql.Date
 import java.text.SimpleDateFormat
 import javax.net.ssl.HttpsURLConnection
+import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
+import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.CameraUpdateFactory
 
-class acivity_localNuevo : AppCompatActivity() {
+class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback{
 
     private lateinit var loadingView: AlertDialog
     private var imagePicker: ImagePicker = ImagePicker(this)
@@ -48,9 +62,19 @@ class acivity_localNuevo : AppCompatActivity() {
 
     private val CLIENT_ID = "9438166e60b3732"
 
+    lateinit var mapFragment: SupportMapFragment
+    lateinit var googleMap: GoogleMap
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_local_nuevo)
+
+
+        mapFragment= supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+
 
         val builder = AlertDialog.Builder(this)
         builder.setCancelable(false)
@@ -124,6 +148,18 @@ class acivity_localNuevo : AppCompatActivity() {
 
         }
 
+    }
+
+
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        // Sets the map type to be "hybrid"
+        googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+        val sydney = LatLng(-34.0, 151.0)
+        googleMap.addMarker(MarkerOptions()
+                .position(sydney)
+                .title("Sydney"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
     private fun uploadImageToImgur(image: Bitmap, image2: Bitmap) {
@@ -247,4 +283,5 @@ class acivity_localNuevo : AppCompatActivity() {
 
     override fun onBackPressed() {
     }
+
 }
