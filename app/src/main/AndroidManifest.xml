@@ -2,12 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.proyecto_mobiles">
 
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".usuarioSesion"
@@ -27,10 +26,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".favoritos"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".perfil_configuracion"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="Perfil"
+            android:parentActivityName=".home"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".home"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -39,9 +40,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acivity_localNuevo"
+            android:label="Agregar un nuevo local"
             android:parentActivityName=".home"
-            android:theme="@style/AppTheme"
-            android:label="Agregar un nuevo local"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

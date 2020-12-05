@@ -123,7 +123,9 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 search.cambiaVisibility(true)
             }
             R.id.nav_profile ->{
-                fragmentPerfil = fragment_perfil()
+                val intent = Intent (this, perfil_configuracion::class.java)
+                startActivity(intent)
+                /*fragmentPerfil = fragment_perfil()
                 supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragmentPerfil)
@@ -132,7 +134,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .commit()
                 val actionBar = supportActionBar
                 actionBar?.title= "Perfil"
-                search.cambiaVisibility(false)
+                search.cambiaVisibility(false)*/
             }
             R.id.nav_favoritos->{
                 fragmentFavoritos = fragment_favoritos()
