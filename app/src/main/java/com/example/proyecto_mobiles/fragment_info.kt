@@ -101,6 +101,7 @@ class fragment_info : Fragment() {
 
         val buttonValor: Button = viewOfLayout.findViewById(R.id.buttonValorar) as Button
         val buttonComentario: Button = viewOfLayout.findViewById(R.id.buttonComentar) as Button
+        val buttonPalFav: Button = viewOfLayout.findViewById(R.id.buttonFav) as Button
 
         val rateL: RatingBar = viewOfLayout.findViewById(R.id.ratingBarLocal) as RatingBar
         val rate2L: RatingBar = viewOfLayout.findViewById(R.id.ratingBar2) as RatingBar
@@ -178,6 +179,32 @@ class fragment_info : Fragment() {
             valorLocal = rateL.rating                                                                      ///AQUI SE GUARDA LA VALORACION QUE SE DIO
             Toast.makeText(getActivity(), "Valoracion: $valorLocal", Toast.LENGTH_SHORT).show()
             println("the value is $valorLocal")
+        }
+
+        buttonPalFav.setOnClickListener {
+
+            val userid2:Int = usuarioSesion.ses.getID()
+
+            val queue = Volley.newRequestQueue(getActivity())
+            val body = JSONObject()
+            body.put("restaurante_id", ResID)
+            body.put("usuario_id", userid2)
+            //load.startLoadingDialog()
+            //Handler().postDelayed({load.dismissDialog()}, 6000)
+            val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/FavoritoRegistrar",body,{
+                    response: JSONObject?->
+                val toast = Toast.makeText(getActivity(), "Favorito Guardado", Toast.LENGTH_LONG)
+                toast.show()
+            }, { error ->
+                error.printStackTrace()
+                Log.e("Servicio web", "Web", error)
+                if(error.toString()=="com.android.volley.ServerError"){
+                    val toast = Toast.makeText(getActivity(), "Error del servidor", Toast.LENGTH_LONG)
+                    toast.show()
+                }
+            })
+            requ.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+            queue.add(requ)
         }
 
         buttonComentario.setOnClickListener {
