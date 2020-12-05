@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBack"
+    tools:context=".home">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="28dp"
+        android:text="Registro de dueño"
+        android:textSize="28sp"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#77551C"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Correo"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#77551C"
+        android:textColorHint="#757575"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <EditText
+        android:id="@+id/txt_correoRegistroDuenio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Ingrese el correo"
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#77551C"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/textView13"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Contraseña"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#77551C"
+        android:textColorHint="#757575"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/txt_correoRegistroDuenio"
+        app:layout_constraintTop_toBottomOf="@+id/txt_correoRegistroDuenio" />
+
+    <EditText
+        android:id="@+id/txt_contrasenaRegistroDuenio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#77551C"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="@+id/txt_correoRegistroDuenio"
+        app:layout_constraintStart_toStartOf="@+id/textView14"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Confirmacion de contraseña"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#77551C"
+        android:textColorHint="#757575"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/txt_contrasenaRegistroDuenio"
+        app:layout_constraintTop_toBottomOf="@+id/txt_contrasenaRegistroDuenio" />
+
+    <EditText
+        android:id="@+id/txt_contrasenaConfirmRegistroDuenio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#77551C"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="@+id/txt_contrasenaRegistroDuenio"
+        app:layout_constraintStart_toStartOf="@+id/textView15"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+    <Button
+        android:id="@+id/btn_registrarDuenio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="100dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Registrar"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#757575"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_contrasenaConfirmRegistroDuenio" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

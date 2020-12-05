@@ -56,14 +56,14 @@ class fragment_perfil : Fragment() {
         val contra1L: TextView = viewOfLayout.findViewById(R.id.editTextContra1) as TextView
         val contra2L: TextView = viewOfLayout.findViewById(R.id.editTextContra2) as TextView
         val avatarL: ImageView = viewOfLayout.findViewById(R.id.imageView) as ImageView
-        radioGroup = viewOfLayout.findViewById(R.id.radioG)
+
 
 
         val btn_names = viewOfLayout.findViewById(R.id.buttonPerfil1) as Button
         val btn_contras = viewOfLayout.findViewById(R.id.buttonPerfil2) as Button
         val btn_imagen = viewOfLayout.findViewById(R.id.buttonIMAGEN) as Button
         val btn_imagenAct = viewOfLayout.findViewById(R.id.buttonIMAGENAct) as Button
-        val btn_cuenta = viewOfLayout.findViewById(R.id.buttonCuenta) as Button
+
         var nuevoNombre: String
         var nuevaContra: String
         var contrasenaFinalNueva: String = "vacio"
@@ -167,26 +167,6 @@ class fragment_perfil : Fragment() {
             avatarL.setImageURI(selectedFile)                                                         ///VARIABLE CON LA DIRECCION URI DE LA IMAGEN NUEVA (selectedFile)
 
             println("the value is $selectedFile")
-        }
-        btn_cuenta.setOnClickListener {                                                              ///SELECCIONAR TIPO DE CUENTA
-
-            val selectedRadioButtonId: Int = radioGroup.checkedRadioButtonId
-            if (selectedRadioButtonId != -1) {
-                selectedRadioButton = viewOfLayout.findViewById(selectedRadioButtonId)
-                val TipoCuenta: String = selectedRadioButton.text.toString()                          /// VARIABLE CON EL TIPO DE CUENTA
-                println("the value is $TipoCuenta")
-
-                val alertDialog3 =
-                    AlertDialog.Builder(requireActivity())
-                alertDialog3.setMessage("Tipo de Cuenta ACtualizada")
-                    .setCancelable(false)
-                    .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
-                        dialog.cancel()
-                    })
-                val alert = alertDialog3.create()
-                alert.setTitle("EXITO")
-                alert.show()
-            }
         }
 
         return viewOfLayout

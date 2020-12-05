@@ -26,6 +26,10 @@
             android:title="Mis comentarios" />
 
         <item
+            android:id="@+id/nav_registrarDuenio"
+            android:icon="@drawable/ic_agregar_duenio"
+            android:title="Registrar dueño" />
+        <item
             android:id="@+id/nav_nuevoLocal"
             android:icon="@drawable/ic_agregar_caja"
             android:title="Nuevo local" />

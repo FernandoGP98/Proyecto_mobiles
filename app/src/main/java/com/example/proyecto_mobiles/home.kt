@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
@@ -31,6 +32,7 @@ import org.w3c.dom.Text
 class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener, androidx.appcompat.widget.SearchView.OnQueryTextListener {
     lateinit var fragmentHome: fragment_home
     lateinit var fragmentPerfil: fragment_perfil
+    lateinit var fragmentUsuarioRegistroDueno: fragment_usuario_registro_dueno
     lateinit var fragmentFavoritos: fragment_favoritos
     lateinit var fragmentComentarios: fragment_comentarios
     lateinit var fragmentNuevoLocal: fragment_nuevolocal
@@ -81,6 +83,13 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         val lbl_username = navHeader.findViewById(R.id.lbl_username)as TextView
         lbl_correo.text = ses.getMail()
         lbl_username.text = ses.getName()
+
+        navView.setNavigationItemSelectedListener(this)
+        var menu:Menu = navView.menu
+        var target:MenuItem = menu.findItem(R.id.nav_registrarDuenio)
+        if(ses.getRol()!=1){
+            target.setVisible(false)
+        }
     }
 
     fun View.cambiaVisibility(visible: Boolean) {
@@ -148,6 +157,18 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 val actionBar = supportActionBar
                 actionBar?.title= "Mis comentarios"
                 search.cambiaVisibility(true)
+            }
+            R.id.nav_registrarDuenio->{
+                fragmentUsuarioRegistroDueno = fragment_usuario_registro_dueno()
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragmentUsuarioRegistroDueno)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack(null)
+                    .commit()
+                val actionBar = supportActionBar
+                actionBar?.title= "Registrar dueño"
+                search.cambiaVisibility(false)
             }
             R.id.nav_nuevoLocal->{
                 val intent = Intent (this, acivity_localNuevo::class.java)

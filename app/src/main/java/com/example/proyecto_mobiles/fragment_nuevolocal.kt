@@ -116,7 +116,7 @@ class fragment_nuevolocal : Fragment() {
 
             if (NombreLocal.isEmpty() || DescripcionLocal.isEmpty() || IMGLocal3.getDrawable() == null || IMGLocal1.getDrawable() == null || IMGLocal2.getDrawable() == null ) {
                 val alertDialog3 =
-                    AlertDialog.Builder(requireActivity())
+                    AlertDialog.Builder(requireActivity(), R.style.Alert)
                 alertDialog3.setMessage("Faltan Datos")
                     .setCancelable(false)
                     .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
@@ -127,7 +127,7 @@ class fragment_nuevolocal : Fragment() {
                 alert.show()
             } else {
                 val alertDialog3 =
-                    AlertDialog.Builder(requireActivity())
+                    AlertDialog.Builder(requireActivity(), R.style.Alert)
                 alertDialog3.setMessage("Local Agregado")
                     .setCancelable(false)
                     .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
@@ -140,7 +140,7 @@ class fragment_nuevolocal : Fragment() {
 
             if (IMGLocal3.getDrawable() == null || IMGLocal1.getDrawable() == null || IMGLocal2.getDrawable() == null ) {
                 val alertDialog3 =
-                    AlertDialog.Builder(requireActivity())
+                    AlertDialog.Builder(requireActivity(), R.style.Alert)
                 alertDialog3.setMessage("Agregar 3 Imagenes")
                     .setCancelable(false)
                     .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
@@ -161,7 +161,7 @@ class fragment_nuevolocal : Fragment() {
 
             if (Brr_NombreLocal.isEmpty() || Brr_DescripcionLocal.isEmpty() || IMGLocal3.getDrawable() == null || IMGLocal1.getDrawable() == null || IMGLocal2.getDrawable() == null ) {
                 val alertDialog3 =
-                    AlertDialog.Builder(requireActivity())
+                    AlertDialog.Builder(requireActivity(), R.style.Alert)
                 alertDialog3.setMessage("Faltan Datos")
                     .setCancelable(false)
                     .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
@@ -172,7 +172,7 @@ class fragment_nuevolocal : Fragment() {
                 alert.show()
             } else {
                 val alertDialog3 =
-                    AlertDialog.Builder(requireActivity())
+                    AlertDialog.Builder(requireActivity(), R.style.Alert)
                 alertDialog3.setMessage("Local Agregado")
                     .setCancelable(false)
                     .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
@@ -185,7 +185,7 @@ class fragment_nuevolocal : Fragment() {
 
             if (IMGLocal3.getDrawable() == null || IMGLocal1.getDrawable() == null || IMGLocal2.getDrawable() == null ) {
                 val alertDialog3 =
-                    AlertDialog.Builder(requireActivity())
+                    AlertDialog.Builder(requireActivity(), R.style.Alert)
                 alertDialog3.setMessage("Agregar 3 Imagenes")
                     .setCancelable(false)
                     .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
