@@ -30,6 +30,7 @@ import java.util.*
 class usuario_registro : AppCompatActivity() {
 
     var currentTimestamp:Long = 0
+    lateinit var dialogBuilder: AlertDialog.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +52,7 @@ class usuario_registro : AppCompatActivity() {
             var contrasenaV1: String = txt_contrasenaRegistro.text.toString()
             var contrasenaV2: String = txt_contasenaConfirmRegistro.text.toString()
 
-            val dialogBuilder = AlertDialog.Builder(this, R.style.Alert)
+            dialogBuilder = AlertDialog.Builder(this, R.style.Alert)
 
 
             if (correo.isNullOrEmpty() || contrasenaV1.isNullOrEmpty() || contrasenaV2.isNullOrEmpty()) {
@@ -67,7 +68,7 @@ class usuario_registro : AppCompatActivity() {
                 if('@' in correo) {
                     if (contrasenaV1 != contrasenaV2) {
 
-                        val dialogBuilder = AlertDialog.Builder(this, R.style.Alert)
+                        dialogBuilder = AlertDialog.Builder(this, R.style.Alert)
                         dialogBuilder.setMessage("La contraseña debe coincidir")
                             .setCancelable(false)
                             .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
@@ -84,12 +85,10 @@ class usuario_registro : AppCompatActivity() {
                         println("the value is $contrasenaFinal")
                         currentTimestamp = System.currentTimeMillis()
                         UsuarioRegistro(correo, contrasenaV1)
-
                         dialogBuilder.setMessage("Registro Completo")
                             .setCancelable(false)
                             .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
                                 //closeKeyboard()
-                                ses.saveMail(correo)
                                 finish()
                                 irHome()
                             })
@@ -133,12 +132,20 @@ class usuario_registro : AppCompatActivity() {
         //Handler().postDelayed({load.dismissDialog()}, 6000)
         val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/UsuarioRegistrar",body,{
             response: JSONObject?->
-            ses.saveMail(correo)
-            ses.savePass(contrasenaV1)
-            ses.saveName(nombre)
-            ses.saveRol(3)
-            val toast = Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_LONG)
-            toast.show()
+            //val usArray = response?.getJSONArray("usuario")
+            val success = response?.getInt("success")
+
+            if(success==1 ){
+                val usuario = response.getJSONObject("usuario")
+                ses.saveMail(usuario.getString("email"))
+                ses.saveName(usuario.getString("nombre"))
+                ses.savePass(usuario.getString("password"))
+                ses.saveRol(usuario.getInt("rol_id"))
+                ses.saveID(usuario.getInt("id"))
+                val toast = Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_SHORT)
+                toast.show()
+            }
+
         }, { error ->
             error.printStackTrace()
             Log.e("Servicio web", "Web", error)
