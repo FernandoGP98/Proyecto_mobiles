@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.proyecto_mobiles">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <uses-feature android:name="android.hardware.type.watch" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -19,14 +16,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <uses-library
-            android:name="com.google.android.wearable"
-            android:required="false"/>
-
-        <meta-data
-            android:name="com.google.android.wearable.standalone"
-            android:value="true" />
-
         <activity
             android:name=".comentarios"
             android:theme="@style/AppTheme.NoActionBar" />
