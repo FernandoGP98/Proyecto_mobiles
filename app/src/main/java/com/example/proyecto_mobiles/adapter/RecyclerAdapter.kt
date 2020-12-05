@@ -1,5 +1,7 @@
 package com.example.proyecto_mobiles.adapter
 
+import android.icu.number.NumberFormatter.with
+import android.icu.number.NumberRangeFormatter.with
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +14,10 @@ import com.example.proyecto_mobiles.R
 import com.example.proyecto_mobiles.fragment_info
 import com.example.proyecto_mobiles.model.ItemList
 import com.example.proyecto_mobiles.usuarioSesion
+import com.squareup.picasso.Picasso
 
 import kotlinx.android.synthetic.main.itemslist_view.view.*
+import java.lang.reflect.Array.get
 
 class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adapter<RecyclerAdapter.RecycleHolder>(),
     Filterable {
@@ -31,13 +35,19 @@ class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adap
     override fun onBindViewHolder(holder: RecycleHolder, position: Int) {
         val currentItem = itemsList[position]
 
-        holder.imgItem.setImageResource(currentItem.imagen)
+        Picasso.get().load(currentItem.imagen).into(holder.imgItem)
         holder.txtRestaurante.text=currentItem.restaurante
         holder.txtDescripcion.text=currentItem.descripcion
         holder.itemView.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?){
                 val itemahora = currentItem.id
+                val imagenahora1 = currentItem.imagen
+                val imagenahora2 = currentItem.imagen2
+                val imagenahora3 = currentItem.imagen3
                 usuarioSesion.ses.saveRestaurante(itemahora)
+                usuarioSesion.ses.saveRestauranteimg1(imagenahora1)
+                usuarioSesion.ses.saveRestauranteimg2(imagenahora2)
+                usuarioSesion.ses.saveRestauranteimg3(imagenahora3)
                 val activity=v!!.context as AppCompatActivity
                 val fragmentInfo=fragment_info()
                 activity.supportFragmentManager

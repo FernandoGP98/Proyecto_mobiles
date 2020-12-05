@@ -29,9 +29,16 @@ import org.json.JSONObject
 
 class fragment_home : Fragment(){
 
-    var imagenesDB = arrayListOf<Int>(                                                                ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
+    var imagenesDB = arrayListOf<String>(                                                                ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
 
     )
+    var imagenesDB2 = arrayListOf<String>(                                                                ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
+
+    )
+    var imagenesDB3 = arrayListOf<String>(                                                                ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
+
+    )
+
 
     var NombreLocalDB = arrayListOf<String>(
 
@@ -98,7 +105,7 @@ class fragment_home : Fragment(){
         val list = ArrayList<ItemList>()
 
         for (i in 0 until size) {
-            val item = ItemList(imagenesDB[i], NombreLocalDB[i], DescripcionLocalDB[i], i)
+            val item = ItemList(imagenesDB[i], imagenesDB2[i], imagenesDB3[i], NombreLocalDB[i], DescripcionLocalDB[i], i)
             list += item
         }
         return list
@@ -106,9 +113,6 @@ class fragment_home : Fragment(){
 
     private fun LlenaLista(value: Int) {
 
-        imagenes.addAll(imagenesDB)
-        NLocal.addAll(NombreLocalDB)
-        NLocal.addAll(DescripcionLocalDB)
     }
 
     private fun usuarioGetByCorreoAndPass(){
@@ -131,14 +135,21 @@ class fragment_home : Fragment(){
                 val descripc = item.getString("descripcion")
                 val calific = item.getString("calificacion")
                 val Rid = item.getString("id")
+                val img = item.getString("img1")
+                val img2 = item.getString("img2")
+                val img3 = item.getString("img3")
+
                 NombreLocalDB.add(nombre)
                 DescripcionLocalDB.add(descripc)
+                imagenesDB.add(img)
+                imagenesDB2.add(img2)
+                imagenesDB3.add(img3)
                 Ridd.add(Rid.toInt())
             }
 
                 for (i in 0..(usArray!!.length() - 1)) {
                     val newItem =
-                        ItemList(R.drawable.img_local2, NombreLocalDB[i], DescripcionLocalDB[i], Ridd[i])
+                        ItemList(imagenesDB[i], imagenesDB2[i], imagenesDB3[i], NombreLocalDB[i], DescripcionLocalDB[i], Ridd[i])
                     exampleList.add(i, newItem)
 
                     adapter.notifyDataSetChanged()
