@@ -36,8 +36,6 @@ class perfil_configuracion : AppCompatActivity() {
         var contrasenaFinalNueva: String = "vacio"
 
         nombreL.setText(usuarioSesion.ses.getName())
-        contra1L.setText("ingrese contraseña nueva")
-        contra2L.setText("confirme contraseña")
         avatarL.setImageResource(R.drawable.avatar)
 
         btn_names.setOnClickListener{
