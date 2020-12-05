@@ -57,7 +57,9 @@ class fragment_info : Fragment() {
 
     var calificacionDB = arrayListOf<Double>(  )
 
-    private val exampleList = generateDummyList(2)
+    var tamano:Int = textoDB.size
+
+    private val exampleList = generateDummyList(tamano)
     private val adapter = ComentariosAdapter(exampleList)
 
     var sampleImages = arrayListOf<String>( )
@@ -116,11 +118,11 @@ class fragment_info : Fragment() {
 
                     nombreLocal = item.getString("nombre")
                     descripcionLocal = item.getString("descripcion")
-                    calificacionBBB = item.getString("calificacion")
+                    //calificacionBBB = item.getString("calificacion")
                     ResID = item.getString("id").toInt()
                     nombreL.setText(nombreLocal)
                     descripcionL.setText(descripcionLocal)
-                    rateL.setRating(calificacionBBB.toFloat())
+                    rateL.setRating(4.0F)
 
                 }
             }
@@ -215,8 +217,6 @@ class fragment_info : Fragment() {
 
                 /////////////////////////////////////////////
 
-                traemelosComentarios()
-
                 insertItem(otraView, comentario, valorComentario)
                 index += 1
             }
@@ -258,14 +258,19 @@ class fragment_info : Fragment() {
 
         val list = ArrayList<ComentariosLista>()
 
-        for (i in 0 until size) {
-            val item = ComentariosLista("Comentario $i", 2.0)
+        for (i in 0 until 2) {
+            val item = ComentariosLista("nada", 5.0)
             list += item
         }
+
         return list
     }
 
     private fun traemelosComentarios(){
+
+        exampleList.clear()
+        textoDB.clear()
+        calificacionDB.clear()
 
         val queue = Volley.newRequestQueue(getActivity())
         val parametros = JSONObject()
@@ -276,10 +281,6 @@ class fragment_info : Fragment() {
                 response: JSONObject?->
             val usArray = response?.getJSONArray("comentarios")
             val success = response?.getInt("success")
-
-            exampleList.clear()
-            textoDB.clear()
-            calificacionDB.clear()
 
             for (i in 0..(usArray!!.length() - 1)) {
                 val item = usArray!!.getJSONObject(i)
