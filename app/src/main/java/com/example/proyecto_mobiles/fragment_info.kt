@@ -52,6 +52,10 @@ class fragment_info : Fragment() {
     var descripcionLocal: String = ""
     var calificacionBBB: String = ""
     var ResID:Int = 0
+    var imagenLocal1: String = ""
+    var imagenLocal2: String = ""
+    var imagenLocal3: String = ""
+    var espera = false
 
     var textoDB = arrayListOf<String>(  )                                                              ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
 
@@ -118,6 +122,9 @@ class fragment_info : Fragment() {
 
                     nombreLocal = item.getString("nombre")
                     descripcionLocal = item.getString("descripcion")
+                    imagenLocal1 = item.getString("img1")
+                    imagenLocal2 = item.getString("img2")
+                    imagenLocal3 = item.getString("img3")
                     //calificacionBBB = item.getString("calificacion")
                     ResID = item.getString("id").toInt()
                     nombreL.setText(nombreLocal)
@@ -125,6 +132,7 @@ class fragment_info : Fragment() {
                     rateL.setRating(4.0F)
 
                 }
+                espera = true
             }
 
             if(success==0){
@@ -143,16 +151,20 @@ class fragment_info : Fragment() {
         queue.add(requ)
 
         ////////////////////////////////////////////////////
-
+        val localCarousel = viewOfLayout.findViewById(R.id.carousel) as CarouselView
         ///////////////////////////////
 
-        sampleImages.add("https://i.imgur.com/jzPlhr6.gif")
-        sampleImages.add("https://i.imgur.com/6RisVZ1.png")
-        sampleImages.add("https://i.imgur.com/RXUio4V.gif")
+        val imggg1:String = usuarioSesion.ses.getRestauranteimg1()
+        val imggg2:String = usuarioSesion.ses.getRestauranteimg2()
+        val imggg3:String = usuarioSesion.ses.getRestauranteimg3()
 
-        val localCarousel = viewOfLayout.findViewById(R.id.carousel) as CarouselView
-        localCarousel.setPageCount(sampleImages.size);
-        localCarousel.setImageListener(imageListener);
+            sampleImages.add(imggg1)
+            sampleImages.add(imggg2)
+            sampleImages.add(imggg3)
+
+            localCarousel.setPageCount(sampleImages.size);
+            localCarousel.setImageListener(imageListener);
+
 
         /*------------VARIABLES PARA LLENAR LA VIEW------------*/
 

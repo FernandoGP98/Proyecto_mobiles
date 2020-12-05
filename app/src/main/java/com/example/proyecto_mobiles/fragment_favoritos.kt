@@ -15,10 +15,14 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 class fragment_favoritos : Fragment() {
 
-    var imagenesDB = arrayListOf<Int>(                                                                ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
-        R.drawable.img_local1,
-        R.drawable.img_local2,
-        R.drawable.img_local3
+    var imagenesDB = arrayListOf<String>(                                                                ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
+
+    )
+    var imagenesDB2 = arrayListOf<String>(                                                                ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
+
+    )
+    var imagenesDB3 = arrayListOf<String>(                                                                ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
+
     )
 
     var NombreLocalDB = arrayListOf<String>(
@@ -72,16 +76,14 @@ class fragment_favoritos : Fragment() {
         val list = ArrayList<ItemList>()
 
         for (i in 0 until size) {
-            val item = ItemList(imagenes[i], NombreLocalDB[i], DescripcionLocalDB[i], i)
+            val item = ItemList(imagenesDB[i], imagenesDB2[i], imagenesDB3[i], NombreLocalDB[i], DescripcionLocalDB[i], i)
             list += item
         }
         return list
     }
     private fun LlenaLista(value: Int) {
 
-        imagenes.addAll(imagenesDB)
-        NLocal.addAll(NombreLocalDB)
-        NLocal.addAll(DescripcionLocalDB)
+
     }
 
 }

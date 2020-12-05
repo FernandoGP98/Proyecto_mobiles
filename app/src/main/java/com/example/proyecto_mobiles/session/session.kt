@@ -13,6 +13,9 @@ class Session (val context: Context){
     val SHARED_FOTO = "foto"
     val SHARED_ROL = "rol"
     val SHARED_RESTAURANTE = "restaurante"
+    val SHARED_RESTAURANTEIMG1 = "restauranteimg1"
+    val SHARED_RESTAURANTEIMG2 = "restauranteimg2"
+    val SHARED_RESTAURANTEIMG3 = "restauranteimg3"
 
     val storage = context.getSharedPreferences(SHARED_NAME, 0)
 
@@ -46,6 +49,16 @@ class Session (val context: Context){
         storage.edit().putInt(SHARED_RESTAURANTE, restaurante).apply()
     }
 
+    fun saveRestauranteimg1(restauranteimg1:String){
+        storage.edit().putString(SHARED_RESTAURANTEIMG1, restauranteimg1).apply()
+    }
+    fun saveRestauranteimg2(restauranteimg2:String){
+        storage.edit().putString(SHARED_RESTAURANTEIMG2, restauranteimg2).apply()
+    }
+    fun saveRestauranteimg3(restauranteimg3:String){
+        storage.edit().putString(SHARED_RESTAURANTEIMG3, restauranteimg3).apply()
+    }
+
     /*FUNCIONES PARA OBTENER DATOS DENTRO DE LA SESION*/
     fun getID():Int{
         return storage.getInt(SHARED_ID,0)!!
@@ -73,6 +86,16 @@ class Session (val context: Context){
 
     fun getRestaurante():Int{
         return storage.getInt(SHARED_RESTAURANTE,0)!!
+    }
+
+    fun getRestauranteimg1():String{
+        return storage.getString(SHARED_RESTAURANTEIMG1,"foto vacia")!!
+    }
+    fun getRestauranteimg2():String{
+        return storage.getString(SHARED_RESTAURANTEIMG2,"foto vacia")!!
+    }
+    fun getRestauranteimg3():String{
+        return storage.getString(SHARED_RESTAURANTEIMG3,"foto vacia")!!
     }
 
     /*LIMPIAR LA SESION DE TODOS SUS DATOS*/
