@@ -56,6 +56,10 @@ class fragment_info : Fragment() {
     var imagenLocal2: String = ""
     var imagenLocal3: String = ""
     var espera = false
+    var averageFav:Double = 0.0
+
+    var CalificacionesDB = arrayListOf<Double>(
+    )
 
     var textoDB = arrayListOf<String>(  )                                                              ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
 
@@ -106,6 +110,44 @@ class fragment_info : Fragment() {
         val rateL: RatingBar = viewOfLayout.findViewById(R.id.ratingBarLocal) as RatingBar
         val rate2L: RatingBar = viewOfLayout.findViewById(R.id.ratingBar2) as RatingBar
 
+//////////////////////////////////////////////////////////
+        val queue2 = Volley.newRequestQueue(getActivity())
+        val parametros2 = JSONObject()
+        parametros2.put("restaurante_id", usuarioSesion.ses.getRestaurante())
+        //load.startLoadingDialog()
+        //Handler().postDelayed({load.dismissDialog()}, 6000)
+        val requ2 = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/ComentarioGetByRestauranteId",parametros2,{
+                response: JSONObject?->
+            val usArray = response?.getJSONArray("comentarios")
+            val success = response?.getInt("success")
+
+            for (i in 0..(usArray!!.length() - 1)) {
+                val item = usArray!!.getJSONObject(i)
+
+                calificacionBBB = item.getString("calificacion")
+
+                calificacionDB.add(calificacionBBB.toDouble())
+
+            }
+
+            val toast = Toast.makeText(getActivity(), "resultado:" +averageFav, Toast.LENGTH_LONG)
+            toast.show()
+
+            if(success==0){
+                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
+                toast.show()
+            }
+        }, { error ->
+            error.printStackTrace()
+            Log.e("Servicio web", "Web", error)
+            if(error.toString()=="com.android.volley.ServerError"){
+                val toast = Toast.makeText(getActivity(), "Error del servidor", Toast.LENGTH_LONG)
+                toast.show()
+            }
+        })
+        requ2.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+        queue2.add(requ2)
+
         ////////////////////////////////////////////////
 
         val queue = Volley.newRequestQueue(getActivity())
@@ -130,7 +172,9 @@ class fragment_info : Fragment() {
                     ResID = item.getString("id").toInt()
                     nombreL.setText(nombreLocal)
                     descripcionL.setText(descripcionLocal)
-                    rateL.setRating(4.0F)
+                    val simpleArray = calificacionDB
+                    averageFav = simpleArray.average()
+                    rateL.setRating(averageFav.toFloat())
 
                 }
                 espera = true
