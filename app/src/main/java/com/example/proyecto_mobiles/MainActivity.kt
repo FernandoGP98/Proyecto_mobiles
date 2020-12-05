@@ -89,7 +89,8 @@ class MainActivity : AppCompatActivity() {
                 ses.saveName(usuario.getString("nombre"))
                 ses.savePass(usuario.getString("password"))
                 ses.saveRol(usuario.getInt("rol_id"))
-                val toast = Toast.makeText(this, "Bienvenido "+usuario.getString("nombre"), Toast.LENGTH_LONG)
+                ses.saveID(usuario.getInt("id"))
+                val toast = Toast.makeText(this, "Bienvenido "+usuario.getString("id"), Toast.LENGTH_LONG)
                 toast.show()
                 irHome()
             }else if(success==0){

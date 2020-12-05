@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -19,6 +20,7 @@ import com.android.volley.toolbox.Volley
 import com.example.proyecto_mobiles.adapter.ComentariosAdapter
 import com.example.proyecto_mobiles.model.ComentariosLista
 import com.example.proyecto_mobiles.model.ItemList
+import com.squareup.picasso.Picasso
 import com.synnapps.carouselview.CarouselView
 import com.synnapps.carouselview.ImageListener
 import kotlinx.android.synthetic.main.fragment_info.*
@@ -49,13 +51,20 @@ class fragment_info : Fragment() {
     var nombreLocal: String = ""
     var descripcionLocal: String = ""
     var calificacionBBB: String = ""
+    var ResID:Int = 0
+
+    var textoDB = arrayListOf<String>(  )                                                              ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
+
+    var calificacionDB = arrayListOf<Double>(  )
 
     private val exampleList = generateDummyList(2)
     private val adapter = ComentariosAdapter(exampleList)
 
-    var nombreRestaurante:String = usuarioSesion.ses.getRestaurante()
+    var sampleImages = arrayListOf<String>( )
 
-    var sampleImages = intArrayOf(R.drawable.img_local1,R.drawable.img_local2,R.drawable.img_local3)  ////ARREGLO DONDE SE GUARDAN LAS 3 IMAGENES A MOSTRAS EN LA VIEW
+    var nombreRestaurante:Int = usuarioSesion.ses.getRestaurante()
+
+      ////ARREGLO DONDE SE GUARDAN LAS 3 IMAGENES A MOSTRAS EN LA VIEW
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,10 +89,6 @@ class fragment_info : Fragment() {
         viewOfLayout = inflater!!.inflate(R.layout.fragment_info, container, false)
         otraView = inflater!!.inflate(R.layout.activity_comentarios, container, false)
 
-        val localCarousel = viewOfLayout.findViewById(R.id.carousel) as CarouselView
-        localCarousel.setPageCount(sampleImages.size);
-        localCarousel.setImageListener(imageListener);
-
         val nombreL: TextView = viewOfLayout.findViewById(R.id.textViewLocal) as TextView
         val descripcionL: TextView = viewOfLayout.findViewById(R.id.textDescripcion) as TextView
         val comentarioLL: EditText = viewOfLayout.findViewById(R.id.editTextTextMultiLineComentario) as EditText
@@ -107,11 +112,12 @@ class fragment_info : Fragment() {
 
             for (i in 0..(usArray!!.length() - 1)) {
                 val item = usArray!!.getJSONObject(i)
-                if(nombreRestaurante == item.getString("nombre")) {
+                if(nombreRestaurante == item.getInt("id")) {
 
                     nombreLocal = item.getString("nombre")
                     descripcionLocal = item.getString("descripcion")
                     calificacionBBB = item.getString("calificacion")
+                    ResID = item.getString("id").toInt()
                     nombreL.setText(nombreLocal)
                     descripcionL.setText(descripcionLocal)
                     rateL.setRating(calificacionBBB.toFloat())
@@ -136,6 +142,15 @@ class fragment_info : Fragment() {
 
         ////////////////////////////////////////////////////
 
+        ///////////////////////////////
+
+        sampleImages.add("https://i.imgur.com/jzPlhr6.gif")
+        sampleImages.add("https://i.imgur.com/6RisVZ1.png")
+        sampleImages.add("https://i.imgur.com/RXUio4V.gif")
+
+        val localCarousel = viewOfLayout.findViewById(R.id.carousel) as CarouselView
+        localCarousel.setPageCount(sampleImages.size);
+        localCarousel.setImageListener(imageListener);
 
         /*------------VARIABLES PARA LLENAR LA VIEW------------*/
 
@@ -171,6 +186,37 @@ class fragment_info : Fragment() {
                 comentarioLL.setText("")
                 comentario = comentarioL                                                             ///Variable con el Comentario AQUI SE MANDA EL COMENTARIO A GUARDAR
                 //editTextTextMultiLineComentario.text.clear()
+
+                ///////////////////////////////////////
+                val userid:Int = usuarioSesion.ses.getID()
+
+                val queue = Volley.newRequestQueue(getActivity())
+                val body = JSONObject()
+                body.put("texto", comentario)
+                body.put("calificacion", valorComentario)
+                body.put("restaurante_id", ResID)
+                body.put("usuario_id", userid)
+                //load.startLoadingDialog()
+                //Handler().postDelayed({load.dismissDialog()}, 6000)
+                val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/ComentarioRegistro",body,{
+                        response: JSONObject?->
+                    val toast = Toast.makeText(getActivity(), "Registro Exitoso", Toast.LENGTH_LONG)
+                    toast.show()
+                }, { error ->
+                    error.printStackTrace()
+                    Log.e("Servicio web", "Web", error)
+                    if(error.toString()=="com.android.volley.ServerError"){
+                        val toast = Toast.makeText(getActivity(), "Error del servidor", Toast.LENGTH_LONG)
+                        toast.show()
+                    }
+                })
+                requ.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+                queue.add(requ)
+
+                /////////////////////////////////////////////
+
+                traemelosComentarios()
+
                 insertItem(otraView, comentario, valorComentario)
                 index += 1
             }
@@ -182,11 +228,13 @@ class fragment_info : Fragment() {
     var imageListener: ImageListener = object : ImageListener {
         override fun setImageForPosition(position: Int, imageView: ImageView) {
             // You can use Glide or Picasso here
-            imageView.setImageResource(sampleImages[position])
+            Picasso.get().load(sampleImages[position]).into(imageView)
         }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+
+        traemelosComentarios()
 
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(FragmentComentariosViewModel::class.java)
@@ -217,5 +265,56 @@ class fragment_info : Fragment() {
         return list
     }
 
+    private fun traemelosComentarios(){
+
+        val queue = Volley.newRequestQueue(getActivity())
+        val parametros = JSONObject()
+        parametros.put("restaurante_id", nombreRestaurante)
+        //load.startLoadingDialog()
+        //Handler().postDelayed({load.dismissDialog()}, 6000)
+        val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/ComentarioGetByRestauranteId",parametros,{
+                response: JSONObject?->
+            val usArray = response?.getJSONArray("comentarios")
+            val success = response?.getInt("success")
+
+            exampleList.clear()
+            textoDB.clear()
+            calificacionDB.clear()
+
+            for (i in 0..(usArray!!.length() - 1)) {
+                val item = usArray!!.getJSONObject(i)
+                val texto = item.getString("texto")
+                val descripc = item.getString("calificacion")
+                textoDB.add(texto)
+                calificacionDB.add(descripc.toDouble())
+            }
+
+            for (i in 0..(usArray!!.length() - 1)) {
+                val newItem =
+                    ComentariosLista(textoDB[i], calificacionDB[i])
+                exampleList.add(i, newItem)
+
+                adapter.notifyDataSetChanged()
+
+            }
+
+            if(success==1 ){
+                val toast = Toast.makeText(getActivity(), "cargo Lista", Toast.LENGTH_LONG)
+                toast.show()
+            }else if(success==0){
+                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
+                toast.show()
+            }
+        }, { error ->
+            error.printStackTrace()
+            Log.e("Servicio web", "Web", error)
+            if(error.toString()=="com.android.volley.ServerError"){
+                val toast = Toast.makeText(getActivity(), "Error del servidor", Toast.LENGTH_LONG)
+                toast.show()
+            }
+        })
+        requ.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+        queue.add(requ)
+    }
 
 }

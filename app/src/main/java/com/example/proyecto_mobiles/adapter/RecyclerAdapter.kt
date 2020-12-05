@@ -36,7 +36,7 @@ class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adap
         holder.txtDescripcion.text=currentItem.descripcion
         holder.itemView.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?){
-                val itemahora = currentItem.restaurante
+                val itemahora = currentItem.id
                 usuarioSesion.ses.saveRestaurante(itemahora)
                 val activity=v!!.context as AppCompatActivity
                 val fragmentInfo=fragment_info()

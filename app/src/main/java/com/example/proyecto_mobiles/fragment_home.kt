@@ -41,6 +41,10 @@ class fragment_home : Fragment(){
 
     )
 
+    var Ridd = arrayListOf<Int>(
+
+    )
+
     var arrayT = arrayListOf<String>()
 
     lateinit var temp:String
@@ -126,13 +130,15 @@ class fragment_home : Fragment(){
                 val nombre = item.getString("nombre")
                 val descripc = item.getString("descripcion")
                 val calific = item.getString("calificacion")
+                val Rid = item.getString("id")
                 NombreLocalDB.add(nombre)
                 DescripcionLocalDB.add(descripc)
+                Ridd.add(Rid.toInt())
             }
 
                 for (i in 0..(usArray!!.length() - 1)) {
                     val newItem =
-                        ItemList(R.drawable.img_local2, NombreLocalDB[i], DescripcionLocalDB[i], i)
+                        ItemList(R.drawable.img_local2, NombreLocalDB[i], DescripcionLocalDB[i], Ridd[i])
                     exampleList.add(i, newItem)
 
                     adapter.notifyDataSetChanged()
