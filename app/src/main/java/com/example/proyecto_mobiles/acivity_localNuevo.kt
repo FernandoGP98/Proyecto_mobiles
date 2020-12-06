@@ -139,19 +139,8 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
         LocalGuardar.setOnClickListener {
 
 
-            selectedImage?.let { it1 ->
-                selectedImage2?.let { it2 ->
-                    selectedImage3?.let { it3 ->
-                        uploadImageToImgur(
-                            it1,
-                            it2, it3
-                        )
-                    }
-                }
-            }
-
             Thread.sleep(6_000)
-            loadingView.show()
+            //loadingView.show()
 
             NombreLocal =
                 editTextNombreLocal.text.toString()                                    ////AGREGA LA INFORMACION FINAL A LAS VARIALBLES
@@ -222,7 +211,7 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
-        private fun uploadImageToImgur(image: Bitmap, image2: Bitmap, image3: Bitmap) {
+        private fun uploadImageToImgur(image: Bitmap, numero: Int) {
             loadingView.show()
             getBase64Image(image, complete = { base64Image ->
                 GlobalScope.launch(Dispatchers.Default) {
@@ -260,12 +249,21 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
                     val data = jsonObject.getJSONObject("data")
                     loadingView.dismiss()
                     Log.d("TAG", "Link is : ${data.getString("link")}")
-                    imgurUrl = data.getString("link")
-
+                    when(numero){
+                        1->{
+                            imgurUrl = data.getString("link")
+                        }
+                        2->{
+                            imgurUrl2 = data.getString("link")
+                        }
+                        3->{
+                            imgurUrl3 = data.getString("link")
+                        }
+                    }
                 }
             })
 
-            getBase64Image(image2, complete = { base64Image ->
+            /*getBase64Image(image2, complete = { base64Image ->
                 GlobalScope.launch(Dispatchers.Default) {
                     val url = URL("https://api.imgur.com/3/image")
 
@@ -346,7 +344,7 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
                     imgurUrl3 = data.getString("link")
 
                 }
-            })
+            })*/
         }
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -359,6 +357,11 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
                     if (results != null) {
                         selectedImage = results
                         unaimagen1.setImageBitmap(selectedImage)
+                        selectedImage?.let { it1 ->
+                            uploadImageToImgur(
+                                it1,1
+                            )
+                        }
                     }
                 }
                 1001 -> {
@@ -368,6 +371,11 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
                     if (results != null) {
                         selectedImage2 = results
                         unaimagen2.setImageBitmap(selectedImage2)
+                        selectedImage2?.let { it2 ->
+                            uploadImageToImgur(
+                                it2,2
+                            )
+                        }
                     }
                 }
                 1002 -> {
@@ -377,10 +385,14 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
                     if (results != null) {
                         selectedImage3 = results
                         unaimagen3.setImageBitmap(selectedImage3)
+                        selectedImage3?.let { it3 ->
+                            uploadImageToImgur(
+                                it3, 3
+                            )
+                        }
                     }
                 }
             }
-
 
         }
 
