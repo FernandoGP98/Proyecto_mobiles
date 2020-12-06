@@ -18,6 +18,7 @@ import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_local_nuevo.*
 import kotlinx.android.synthetic.main.activity_menu.*
@@ -70,8 +71,14 @@ class perfil_configuracion : AppCompatActivity() {
         var nuevaContra: String
         var contrasenaFinalNueva: String = "vacio"
 
-        nombreL.setText(usuarioSesion.ses.getName())
-        avatarL.setImageResource(R.drawable.avatar)
+        nombreL.setText(ses.getName())
+
+        var foto = ses.getFoto()
+        if(foto==""||foto=="foto vacia"||foto=="null") {
+            avatarL.setImageResource(R.drawable.avatar)
+        }else{
+            Picasso.get().load(ses.getFoto()).into(avatarL)
+        }
 
         btn_names.setOnClickListener{
             var nombreN: String = nombreL.text.toString()
@@ -101,7 +108,8 @@ class perfil_configuracion : AppCompatActivity() {
             }
         }
         btn_contras.setOnClickListener {
-            Picasso.get().load(imgurUrl).into(iv_foto)
+            //Picasso.get().load(imgurUrl).into(iv_foto)
+            //uploadImageToImgur(selectedImage)
             var contra1N: String = contra1L.text.toString()
             var contra2N: String = contra2L.text.toString()
 
@@ -152,13 +160,12 @@ class perfil_configuracion : AppCompatActivity() {
             }
         }
         btn_imagenAct.setOnClickListener {
-            uploadImageToImgur(selectedImage)
 
             Thread.sleep(6_000)
 
             val queue = Volley.newRequestQueue(this)
             val body = JSONObject()
-            body.put("id", usuarioSesion.ses.getID())
+            body.put("id", ses.getID())
             body.put("foto", imgurUrl)
 
 
@@ -170,11 +177,17 @@ class perfil_configuracion : AppCompatActivity() {
                 body,
                 { response: JSONObject? ->
                     val success = response?.getInt("success")
+                    if(success==1) {
+                        val usuario = response.getJSONObject("usuario")
+                        ses.saveFoto(usuario.getString("foto"))
 
-                    usuarioSesion.ses.saveFoto(imgurUrl)
+                        val toast = Toast.makeText(this, "Avatar Actualizado", Toast.LENGTH_LONG)
+                        toast.show()
+                    }else{
+                        val toast = Toast.makeText(this, "Error de actualizacion", Toast.LENGTH_LONG)
+                        toast.show()
+                    }
 
-                    val toast = Toast.makeText(this, "Avatar Actualizado", Toast.LENGTH_LONG)
-                    toast.show()
                 },
                 { error ->
                     error.printStackTrace()
@@ -251,6 +264,8 @@ class perfil_configuracion : AppCompatActivity() {
                 if (results != null) {
                     selectedImage = results
                     imageViewEdit.setImageBitmap(selectedImage)
+                    Picasso.get().load(imgurUrl).into(iv_foto)
+                    uploadImageToImgur(selectedImage)
                 }
     }
 

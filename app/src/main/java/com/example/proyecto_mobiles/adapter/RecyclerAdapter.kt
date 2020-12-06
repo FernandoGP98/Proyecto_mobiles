@@ -59,7 +59,6 @@ class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adap
             }
         })
     }
-
     //override fun getItemCount() = itemsList.size
 
     class RecycleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

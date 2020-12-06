@@ -46,7 +46,7 @@ class fragment_info : Fragment() {
     private lateinit var otraView: View
     private lateinit var carouselView: CarouselView
     var itemList: List<Int> = ArrayList()
-    var index:Int = 2
+    var index:Int = 0
 
     var nombreLocal: String = ""
     var descripcionLocal: String = ""
@@ -103,7 +103,6 @@ class fragment_info : Fragment() {
         val descripcionL: TextView = viewOfLayout.findViewById(R.id.textDescripcion) as TextView
         val comentarioLL: EditText = viewOfLayout.findViewById(R.id.editTextTextMultiLineComentario) as EditText
 
-        val buttonValor: Button = viewOfLayout.findViewById(R.id.buttonValorar) as Button
         val buttonComentario: Button = viewOfLayout.findViewById(R.id.buttonComentar) as Button
         val buttonPalFav: Button = viewOfLayout.findViewById(R.id.buttonFav) as Button
 
@@ -218,12 +217,6 @@ class fragment_info : Fragment() {
         var valorLocal: Float
         var valorComentario: Double
         var comentario: String
-
-        buttonValor.setOnClickListener {
-            valorLocal = rateL.rating                                                                      ///AQUI SE GUARDA LA VALORACION QUE SE DIO
-            Toast.makeText(getActivity(), "Valoracion: $valorLocal", Toast.LENGTH_SHORT).show()
-            println("the value is $valorLocal")
-        }
 
         buttonPalFav.setOnClickListener {
 

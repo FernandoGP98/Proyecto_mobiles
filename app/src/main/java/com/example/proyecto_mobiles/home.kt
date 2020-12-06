@@ -96,7 +96,12 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         lbl_correo.text = ses.getMail()
         lbl_username.text = ses.getName()
 
-        Picasso.get().load(ses.getFoto()).into(lbl_avatar)
+        var foto = ses.getFoto()
+        if(foto==""||foto=="foto vacia"||foto=="null") {
+            lbl_avatar.setImageResource(R.drawable.avatar)
+        }else{
+            Picasso.get().load(ses.getFoto()).into(lbl_avatar)
+        }
 
 
         navView.setNavigationItemSelectedListener(this)
