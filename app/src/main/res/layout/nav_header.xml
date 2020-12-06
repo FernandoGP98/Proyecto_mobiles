@@ -9,14 +9,23 @@
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/iv_foto"
+    <androidx.cardview.widget.CardView
         android:layout_width="72dp"
         android:layout_height="72dp"
+        app:cardCornerRadius="100dp"
         android:layout_gravity="center"
-        android:contentDescription="Imagen de usuario"
-        android:src="@drawable/avatar"
-        android:textAlignment="center" />
+        app:cardPreventCornerOverlap="false">
+
+        <ImageView
+            android:id="@+id/iv_foto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:background="@drawable/avatar"
+            android:contentDescription="Imagen de usuario"
+            android:textAlignment="center" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/lbl_username"

@@ -15,7 +15,9 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.android.synthetic.main.fragment_perfil.*
 import org.json.JSONObject
 
@@ -90,6 +92,8 @@ class MainActivity : AppCompatActivity() {
                 ses.savePass(usuario.getString("password"))
                 ses.saveRol(usuario.getInt("rol_id"))
                 ses.saveID(usuario.getInt("id"))
+                ses.saveFoto(usuario.getString("foto"))
+
                 val toast = Toast.makeText(this, "Bienvenido "+usuario.getString("id"), Toast.LENGTH_LONG)
                 toast.show()
                 irHome()

@@ -125,11 +125,12 @@
 
                     <ImageView
                         android:id="@+id/imageViewEdit"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_marginLeft="0dp"
-                        android:scaleType="centerInside"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
                         android:background="@drawable/avatar" />
                 </androidx.cardview.widget.CardView>
 

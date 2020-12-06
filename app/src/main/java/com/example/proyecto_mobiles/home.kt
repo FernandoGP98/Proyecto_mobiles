@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.SearchView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -31,6 +32,7 @@ import com.example.proyecto_mobiles.adapter.RecyclerAdapter
 import com.example.proyecto_mobiles.model.ItemList
 import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 import com.google.android.material.navigation.NavigationView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.nav_header.*
@@ -89,8 +91,12 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         val navHeader = navView.getHeaderView(0)
         val lbl_correo = navHeader.findViewById(R.id.lbl_correo) as TextView
         val lbl_username = navHeader.findViewById(R.id.lbl_username)as TextView
+        val lbl_avatar = navHeader.findViewById(R.id.iv_foto)as ImageView
         lbl_correo.text = ses.getMail()
         lbl_username.text = ses.getName()
+
+        Picasso.get().load(ses.getFoto()).into(lbl_avatar)
+
 
         navView.setNavigationItemSelectedListener(this)
         var menu:Menu = navView.menu
