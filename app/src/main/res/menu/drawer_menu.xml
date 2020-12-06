@@ -16,6 +16,11 @@
             android:title="@string/perfil" />
 
         <item
+            android:id="@+id/nav_mislocales"
+            android:icon="@drawable/ic_home"
+            android:title="Mis Locales" />
+
+        <item
             android:id="@+id/nav_favoritos"
             android:icon="@drawable/ic_favoritos"
             android:title="Locales favoritos" />

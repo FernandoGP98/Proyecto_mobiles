@@ -44,6 +44,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     lateinit var fragmentPerfil: fragment_perfil
     lateinit var fragmentUsuarioRegistroDueno: fragment_usuario_registro_dueno
     lateinit var fragmentFavoritos: fragment_favoritos
+    lateinit var fragmentMislocales: fragment_mislocales
     lateinit var fragmentComentarios: fragment_comentarios
     lateinit var fragmentNuevoLocal: fragment_nuevolocal
     lateinit var search: SearchView
@@ -149,6 +150,18 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 val actionBar = supportActionBar
                 actionBar?.title= "Perfil"
                 search.cambiaVisibility(false)*/
+            }
+            R.id.nav_mislocales->{
+                fragmentMislocales = fragment_mislocales()
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragmentMislocales)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack(null)
+                    .commit()
+                val actionBar = supportActionBar
+                actionBar?.title= "Mis Locales"
+                search.cambiaVisibility(true)
             }
             R.id.nav_favoritos->{
                 fragmentFavoritos = fragment_favoritos()

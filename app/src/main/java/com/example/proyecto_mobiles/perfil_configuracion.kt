@@ -101,6 +101,7 @@ class perfil_configuracion : AppCompatActivity() {
             }
         }
         btn_contras.setOnClickListener {
+            Picasso.get().load(imgurUrl).into(iv_foto)
             var contra1N: String = contra1L.text.toString()
             var contra2N: String = contra2L.text.toString()
 
@@ -192,7 +193,7 @@ class perfil_configuracion : AppCompatActivity() {
             )
             queue.add(requ)
 
-            Picasso.get().load(imgurUrl).into(iv_foto)
+
         }
 
     }
