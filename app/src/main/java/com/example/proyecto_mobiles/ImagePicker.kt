@@ -68,7 +68,7 @@ class ImagePicker(private val activity: Activity) {
         intent.type = "image/*"
         intent.putExtra("scale", true)
         intent.putExtra("aspectX", 16)
-        intent.putExtra("aspectY", 9)
+        intent.putExtra("aspectY", 16)
         activity.startActivityForResult(intent, MY_REQUEST_PICK_IMAGE)
     }
 

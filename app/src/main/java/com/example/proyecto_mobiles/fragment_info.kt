@@ -237,8 +237,15 @@ class fragment_info : Fragment() {
             //Handler().postDelayed({load.dismissDialog()}, 6000)
             val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/FavoritoRegistrar",body,{
                     response: JSONObject?->
-                val toast = Toast.makeText(getActivity(), "Favorito Guardado", Toast.LENGTH_LONG)
-                toast.show()
+                val success = response?.getInt("success")
+
+                if(success==1 ){
+                    val toast = Toast.makeText(getActivity(), "Favorito Guardado", Toast.LENGTH_LONG)
+                    toast.show()
+                }else if(success==0){
+                    val toast = Toast.makeText(getActivity(), "Favorito Borrado", Toast.LENGTH_LONG)
+                    toast.show()
+                }
             }, { error ->
                 error.printStackTrace()
                 Log.e("Servicio web", "Web", error)
