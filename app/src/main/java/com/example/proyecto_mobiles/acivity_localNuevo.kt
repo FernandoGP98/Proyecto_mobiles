@@ -35,7 +35,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-import kotlinx.android.synthetic.main.activity_info.*
 
 import kotlinx.android.synthetic.main.activity_local_nuevo.*
 import kotlinx.android.synthetic.main.activity_local_nuevo.LocalGuardar
@@ -57,6 +56,7 @@ import javax.net.ssl.HttpsURLConnection
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 
 class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
@@ -175,7 +175,7 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
             }
 
             Thread.sleep(6_000)
-            loadingView.show()
+            //loadingView.show()
 
             NombreLocal =
                 editTextNombreLocal.text.toString()                                    ////AGREGA LA INFORMACION FINAL A LAS VARIALBLES
@@ -233,20 +233,22 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-/*
-    override fun onMapReady(googleMap: GoogleMap) {
-        // Sets the map type to be "hybrid"
-        googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(
-            MarkerOptions()
-                .position(sydney)
-                .title("Sydney")
-        )
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-    }*/
 
+    fun checklocationpermission() : Boolean{
+        var state = false
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if(this.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && this.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                state = true
+            } else{
+                ActivityCompat.requestPermissions( this, arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION), 1000)
+            }
+        }else state = true
 
+        return state
+    }
+
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap?) {
 
        val map = googleMap
@@ -264,24 +266,9 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
 
                 map?.addMarker(MarkerOptions().position(pos).title("hola"))
                 map?.maxZoomLevel
-
-                Toast.makeText(this, "locacion: " +  latitude.toString()+ ", "+ longitude.toString(), Toast.LENGTH_LONG ).show()
+                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10f))
             }
         }
-    }
-
-    fun checklocationpermission() : Boolean{
-        var state = false
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if(this.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && this.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                state = true
-            } else{
-                ActivityCompat.requestPermissions( this, arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION), 1000)
-            }
-        }else state = true
-
-        return state
     }
 
     private fun uploadImageToImgur(image: Bitmap, image2: Bitmap, image3: Bitmap) {

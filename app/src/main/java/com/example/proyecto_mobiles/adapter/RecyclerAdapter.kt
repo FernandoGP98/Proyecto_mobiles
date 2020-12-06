@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_mobiles.R
+import com.example.proyecto_mobiles.db.FavoritosEntity
 import com.example.proyecto_mobiles.fragment_info
 import com.example.proyecto_mobiles.model.ItemList
 import com.example.proyecto_mobiles.usuarioSesion
@@ -25,6 +26,12 @@ class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adap
     public var mItems: List<ItemList> = itemsList
 
     public var itemahora:String = ""
+
+    var items = ArrayList<FavoritosEntity>()
+
+    fun setListData(data: ArrayList<FavoritosEntity>) {
+        this.items = data
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecycleHolder {
         val itemView=LayoutInflater.from(parent.context).inflate(R.layout.itemslist_view,
@@ -65,7 +72,9 @@ class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adap
         val imgItem: ImageView = itemView.iv_restaurante
         val txtRestaurante: TextView = itemView.txt_resturante
         val txtDescripcion: TextView = itemView.txt_descripcion
+        fun bing(data: FavoritosEntity){
 
+        }
     }
 
     override fun getItemCount(): Int {
