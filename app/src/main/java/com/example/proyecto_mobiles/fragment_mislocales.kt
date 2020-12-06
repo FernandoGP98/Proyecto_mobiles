@@ -114,15 +114,15 @@ class fragment_mislocales : Fragment() {
 
         val queue2 = Volley.newRequestQueue(getActivity())
         val parametros2 = JSONObject()
-        parametros2.put("usuario_id", usuarioSesion.ses.getID())
+        parametros2.put("id", usuarioSesion.ses.getID())
         //load.startLoadingDialog()
         //Handler().postDelayed({load.dismissDialog()}, 6000)
         val requ2 = JsonObjectRequest(
             Request.Method.POST,
-            "https://restaurantespia.herokuapp.com/FavoritoGetByUsuarioId",
+            "https://restaurantespia.herokuapp.com/RestaurantesGetByUsuario",
             parametros2,
             { response: JSONObject? ->
-                val usArray = response?.getJSONArray("favoritos")
+                val usArray = response?.getJSONArray("restaurantes")
                 val success = response?.getInt("success")
 
                 if (success == 1) {

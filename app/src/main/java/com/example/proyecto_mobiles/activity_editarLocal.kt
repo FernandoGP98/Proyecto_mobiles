@@ -56,7 +56,7 @@ import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 
-class acivity_Editarlocal : AppCompatActivity(), OnMapReadyCallback {
+class acivity_editarLocal : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var loadingView: AlertDialog
     private var imagePicker: ImagePicker = ImagePicker(this)
@@ -82,7 +82,7 @@ class acivity_Editarlocal : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_local_nuevo)
+        setContentView(R.layout.activity_editar_local)
 
 
         mapFragment = supportFragmentManager
@@ -222,187 +222,187 @@ class acivity_Editarlocal : AppCompatActivity(), OnMapReadyCallback {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
-        private fun uploadImageToImgur(image: Bitmap, image2: Bitmap, image3: Bitmap) {
-            loadingView.show()
-            getBase64Image(image, complete = { base64Image ->
-                GlobalScope.launch(Dispatchers.Default) {
-                    val url = URL("https://api.imgur.com/3/image")
+    private fun uploadImageToImgur(image: Bitmap, image2: Bitmap, image3: Bitmap) {
+        loadingView.show()
+        getBase64Image(image, complete = { base64Image ->
+            GlobalScope.launch(Dispatchers.Default) {
+                val url = URL("https://api.imgur.com/3/image")
 
-                    val boundary = "Boundary-${System.currentTimeMillis()}"
+                val boundary = "Boundary-${System.currentTimeMillis()}"
 
-                    val httpsURLConnection =
-                        withContext(Dispatchers.IO) { url.openConnection() as HttpsURLConnection }
-                    httpsURLConnection.setRequestProperty("Authorization", "Client-ID $CLIENT_ID")
-                    httpsURLConnection.setRequestProperty(
-                        "Content-Type",
-                        "multipart/form-data; boundary=$boundary"
-                    )
+                val httpsURLConnection =
+                    withContext(Dispatchers.IO) { url.openConnection() as HttpsURLConnection }
+                httpsURLConnection.setRequestProperty("Authorization", "Client-ID $CLIENT_ID")
+                httpsURLConnection.setRequestProperty(
+                    "Content-Type",
+                    "multipart/form-data; boundary=$boundary"
+                )
 
-                    httpsURLConnection.requestMethod = "POST"
-                    httpsURLConnection.doInput = true
-                    httpsURLConnection.doOutput = true
+                httpsURLConnection.requestMethod = "POST"
+                httpsURLConnection.doInput = true
+                httpsURLConnection.doOutput = true
 
-                    var body = ""
-                    body += "--$boundary\r\n"
-                    body += "Content-Disposition:form-data; name=\"image\""
-                    body += "\r\n\r\n$base64Image\r\n"
-                    body += "--$boundary--\r\n"
+                var body = ""
+                body += "--$boundary\r\n"
+                body += "Content-Disposition:form-data; name=\"image\""
+                body += "\r\n\r\n$base64Image\r\n"
+                body += "--$boundary--\r\n"
 
 
-                    val outputStreamWriter = OutputStreamWriter(httpsURLConnection.outputStream)
-                    withContext(Dispatchers.IO) {
-                        outputStreamWriter.write(body)
-                        outputStreamWriter.flush()
-                    }
-                    val response = httpsURLConnection.inputStream.bufferedReader()
-                        .use { it.readText() }  // defaults to UTF-8
-                    val jsonObject = JSONTokener(response).nextValue() as JSONObject
-                    val data = jsonObject.getJSONObject("data")
-                    loadingView.dismiss()
-                    Log.d("TAG", "Link is : ${data.getString("link")}")
-                    imgurUrl = data.getString("link")
-
+                val outputStreamWriter = OutputStreamWriter(httpsURLConnection.outputStream)
+                withContext(Dispatchers.IO) {
+                    outputStreamWriter.write(body)
+                    outputStreamWriter.flush()
                 }
-            })
+                val response = httpsURLConnection.inputStream.bufferedReader()
+                    .use { it.readText() }  // defaults to UTF-8
+                val jsonObject = JSONTokener(response).nextValue() as JSONObject
+                val data = jsonObject.getJSONObject("data")
+                loadingView.dismiss()
+                Log.d("TAG", "Link is : ${data.getString("link")}")
+                imgurUrl = data.getString("link")
 
-            getBase64Image(image2, complete = { base64Image ->
-                GlobalScope.launch(Dispatchers.Default) {
-                    val url = URL("https://api.imgur.com/3/image")
+            }
+        })
 
-                    val boundary = "Boundary-${System.currentTimeMillis()}"
+        getBase64Image(image2, complete = { base64Image ->
+            GlobalScope.launch(Dispatchers.Default) {
+                val url = URL("https://api.imgur.com/3/image")
 
-                    val httpsURLConnection =
-                        withContext(Dispatchers.IO) { url.openConnection() as HttpsURLConnection }
-                    httpsURLConnection.setRequestProperty("Authorization", "Client-ID $CLIENT_ID")
-                    httpsURLConnection.setRequestProperty(
-                        "Content-Type",
-                        "multipart/form-data; boundary=$boundary"
-                    )
+                val boundary = "Boundary-${System.currentTimeMillis()}"
 
-                    httpsURLConnection.requestMethod = "POST"
-                    httpsURLConnection.doInput = true
-                    httpsURLConnection.doOutput = true
+                val httpsURLConnection =
+                    withContext(Dispatchers.IO) { url.openConnection() as HttpsURLConnection }
+                httpsURLConnection.setRequestProperty("Authorization", "Client-ID $CLIENT_ID")
+                httpsURLConnection.setRequestProperty(
+                    "Content-Type",
+                    "multipart/form-data; boundary=$boundary"
+                )
 
-                    var body = ""
-                    body += "--$boundary\r\n"
-                    body += "Content-Disposition:form-data; name=\"image\""
-                    body += "\r\n\r\n$base64Image\r\n"
-                    body += "--$boundary--\r\n"
+                httpsURLConnection.requestMethod = "POST"
+                httpsURLConnection.doInput = true
+                httpsURLConnection.doOutput = true
+
+                var body = ""
+                body += "--$boundary\r\n"
+                body += "Content-Disposition:form-data; name=\"image\""
+                body += "\r\n\r\n$base64Image\r\n"
+                body += "--$boundary--\r\n"
 
 
-                    val outputStreamWriter = OutputStreamWriter(httpsURLConnection.outputStream)
-                    withContext(Dispatchers.IO) {
-                        outputStreamWriter.write(body)
-                        outputStreamWriter.flush()
-                    }
-                    val response = httpsURLConnection.inputStream.bufferedReader()
-                        .use { it.readText() }  // defaults to UTF-8
-                    val jsonObject = JSONTokener(response).nextValue() as JSONObject
-                    val data = jsonObject.getJSONObject("data")
-                    loadingView.dismiss()
-                    Log.d("TAG", "Link is : ${data.getString("link")}")
-                    imgurUrl2 = data.getString("link")
-
+                val outputStreamWriter = OutputStreamWriter(httpsURLConnection.outputStream)
+                withContext(Dispatchers.IO) {
+                    outputStreamWriter.write(body)
+                    outputStreamWriter.flush()
                 }
-            })
-            //////////////////////////////////////
+                val response = httpsURLConnection.inputStream.bufferedReader()
+                    .use { it.readText() }  // defaults to UTF-8
+                val jsonObject = JSONTokener(response).nextValue() as JSONObject
+                val data = jsonObject.getJSONObject("data")
+                loadingView.dismiss()
+                Log.d("TAG", "Link is : ${data.getString("link")}")
+                imgurUrl2 = data.getString("link")
 
-            getBase64Image(image3, complete = { base64Image ->
-                GlobalScope.launch(Dispatchers.Default) {
-                    val url = URL("https://api.imgur.com/3/image")
+            }
+        })
+        //////////////////////////////////////
 
-                    val boundary = "Boundary-${System.currentTimeMillis()}"
+        getBase64Image(image3, complete = { base64Image ->
+            GlobalScope.launch(Dispatchers.Default) {
+                val url = URL("https://api.imgur.com/3/image")
 
-                    val httpsURLConnection =
-                        withContext(Dispatchers.IO) { url.openConnection() as HttpsURLConnection }
-                    httpsURLConnection.setRequestProperty("Authorization", "Client-ID $CLIENT_ID")
-                    httpsURLConnection.setRequestProperty(
-                        "Content-Type",
-                        "multipart/form-data; boundary=$boundary"
-                    )
+                val boundary = "Boundary-${System.currentTimeMillis()}"
 
-                    httpsURLConnection.requestMethod = "POST"
-                    httpsURLConnection.doInput = true
-                    httpsURLConnection.doOutput = true
+                val httpsURLConnection =
+                    withContext(Dispatchers.IO) { url.openConnection() as HttpsURLConnection }
+                httpsURLConnection.setRequestProperty("Authorization", "Client-ID $CLIENT_ID")
+                httpsURLConnection.setRequestProperty(
+                    "Content-Type",
+                    "multipart/form-data; boundary=$boundary"
+                )
 
-                    var body = ""
-                    body += "--$boundary\r\n"
-                    body += "Content-Disposition:form-data; name=\"image\""
-                    body += "\r\n\r\n$base64Image\r\n"
-                    body += "--$boundary--\r\n"
+                httpsURLConnection.requestMethod = "POST"
+                httpsURLConnection.doInput = true
+                httpsURLConnection.doOutput = true
+
+                var body = ""
+                body += "--$boundary\r\n"
+                body += "Content-Disposition:form-data; name=\"image\""
+                body += "\r\n\r\n$base64Image\r\n"
+                body += "--$boundary--\r\n"
 
 
-                    val outputStreamWriter = OutputStreamWriter(httpsURLConnection.outputStream)
-                    withContext(Dispatchers.IO) {
-                        outputStreamWriter.write(body)
-                        outputStreamWriter.flush()
-                    }
-                    val response = httpsURLConnection.inputStream.bufferedReader()
-                        .use { it.readText() }  // defaults to UTF-8
-                    val jsonObject = JSONTokener(response).nextValue() as JSONObject
-                    val data = jsonObject.getJSONObject("data")
-                    loadingView.dismiss()
-                    Log.d("TAG", "Link is : ${data.getString("link")}")
-                    imgurUrl3 = data.getString("link")
-
+                val outputStreamWriter = OutputStreamWriter(httpsURLConnection.outputStream)
+                withContext(Dispatchers.IO) {
+                    outputStreamWriter.write(body)
+                    outputStreamWriter.flush()
                 }
-            })
-        }
+                val response = httpsURLConnection.inputStream.bufferedReader()
+                    .use { it.readText() }  // defaults to UTF-8
+                val jsonObject = JSONTokener(response).nextValue() as JSONObject
+                val data = jsonObject.getJSONObject("data")
+                loadingView.dismiss()
+                Log.d("TAG", "Link is : ${data.getString("link")}")
+                imgurUrl3 = data.getString("link")
 
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            }
+        })
+    }
 
-            when (requestCode) {
-                1000 -> {
-                    super.onActivityResult(requestCode, resultCode, data)
-                    val results: Bitmap? =
-                        imagePicker.onActivityResult(requestCode, resultCode, data)
-                    if (results != null) {
-                        selectedImage = results
-                        unaimagen1.setImageBitmap(selectedImage)
-                    }
-                }
-                1001 -> {
-                    super.onActivityResult(requestCode, resultCode, data)
-                    val results: Bitmap? =
-                        imagePicker2.onActivityResult(requestCode, resultCode, data)
-                    if (results != null) {
-                        selectedImage2 = results
-                        unaimagen2.setImageBitmap(selectedImage2)
-                    }
-                }
-                1002 -> {
-                    super.onActivityResult(requestCode, resultCode, data)
-                    val results: Bitmap? =
-                        imagePicker3.onActivityResult(requestCode, resultCode, data)
-                    if (results != null) {
-                        selectedImage3 = results
-                        unaimagen3.setImageBitmap(selectedImage3)
-                    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        when (requestCode) {
+            1000 -> {
+                super.onActivityResult(requestCode, resultCode, data)
+                val results: Bitmap? =
+                    imagePicker.onActivityResult(requestCode, resultCode, data)
+                if (results != null) {
+                    selectedImage = results
+                    unaimagen1.setImageBitmap(selectedImage)
                 }
             }
-
-
-        }
-
-        override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
-        ) {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            imagePicker.onRequestPermissionsResult(requestCode, grantResults)
-        }
-
-        private fun getBase64Image(image: Bitmap, complete: (String) -> Unit) {
-            GlobalScope.launch {
-                val outputStream = ByteArrayOutputStream()
-                image.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-                val b = outputStream.toByteArray()
-                complete(Base64.encodeToString(b, Base64.DEFAULT))
+            1001 -> {
+                super.onActivityResult(requestCode, resultCode, data)
+                val results: Bitmap? =
+                    imagePicker2.onActivityResult(requestCode, resultCode, data)
+                if (results != null) {
+                    selectedImage2 = results
+                    unaimagen2.setImageBitmap(selectedImage2)
+                }
+            }
+            1002 -> {
+                super.onActivityResult(requestCode, resultCode, data)
+                val results: Bitmap? =
+                    imagePicker3.onActivityResult(requestCode, resultCode, data)
+                if (results != null) {
+                    selectedImage3 = results
+                    unaimagen3.setImageBitmap(selectedImage3)
+                }
             }
         }
 
-        override fun onBackPressed() {
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        imagePicker.onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    private fun getBase64Image(image: Bitmap, complete: (String) -> Unit) {
+        GlobalScope.launch {
+            val outputStream = ByteArrayOutputStream()
+            image.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            val b = outputStream.toByteArray()
+            complete(Base64.encodeToString(b, Base64.DEFAULT))
         }
+    }
+
+    override fun onBackPressed() {
+    }
 
 }

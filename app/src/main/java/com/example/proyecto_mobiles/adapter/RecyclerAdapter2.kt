@@ -8,7 +8,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_mobiles.R
-import com.example.proyecto_mobiles.acivity_Editarlocal
+import com.example.proyecto_mobiles.acivity_editarLocal
+import com.example.proyecto_mobiles.acivity_localNuevo
 import com.example.proyecto_mobiles.model.ItemList
 import com.example.proyecto_mobiles.usuarioSesion
 import com.squareup.picasso.Picasso
@@ -47,7 +48,7 @@ class RecyclerAdapter2(private val itemsList: List<ItemList>) : RecyclerView.Ada
                 usuarioSesion.ses.saveRestauranteimg3(imagenahora3)
 
                 val context: Context = v!!.context
-                val intent = Intent(context, acivity_Editarlocal::class.java)
+                val intent = Intent(context, acivity_editarLocal::class.java)
                 context.startActivity(intent)
             }
         })
