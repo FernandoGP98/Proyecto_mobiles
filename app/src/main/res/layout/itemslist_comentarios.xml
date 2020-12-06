@@ -21,7 +21,8 @@
             android:backgroundTint="#FFFFFF"
             android:numStars="5"
             android:scaleX="0.5"
-            android:scaleY="0.5" />
+            android:scaleY="0.5"
+            android:isIndicator="true"/>
 
         <ImageButton
             android:id="@+id/imageButton"
