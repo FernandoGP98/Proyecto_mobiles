@@ -1,9 +1,11 @@
 package com.example.proyecto_mobiles
 
 import android.content.ClipData
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -18,8 +20,13 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.FragmentTransitionImpl
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.proyecto_mobiles.adapter.RecyclerAdapter
 import com.example.proyecto_mobiles.model.ItemList
 import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
@@ -27,6 +34,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.nav_header.*
+import org.json.JSONObject
 import org.w3c.dom.Text
 
 class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener, androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -192,11 +200,50 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 onBackPressed()
                 finish()
             }
+            R.id.nav_eliminarCuenta->{
+                val alertDialog3 =
+                    AlertDialog.Builder(this, R.style.Alert)
+                alertDialog3.setMessage("¿Esta seguro que desea eliminar su cuenta?")
+                    .setCancelable(false)
+                    .setPositiveButton("Si", DialogInterface.OnClickListener{dialog, id->
+                        EliminarCuenta()
+                        ses.wipe()
+                        finish()
+                    })
+                    .setNegativeButton("No", DialogInterface.OnClickListener { dialog, id ->
+                        dialog.cancel()
+                    })
+                val alert = alertDialog3.create()
+                alert.setTitle("EXITO")
+                alert.show()
+            }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
+    private fun EliminarCuenta(){
+        val queue = Volley.newRequestQueue(this)
+        val body = JSONObject()
+        body.put("id", ses.getID())
+        val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/UsuarioEliminar", body,{
+            response: JSONObject?->
+            val success=response?.getInt("success")
+            if(success==1){
+                val toast = Toast.makeText(this, "Se elimino su cuenta", Toast.LENGTH_SHORT)
+                toast.show()
+            }
+        }, {error->
+            error.printStackTrace()
+            Log.e("Servicio web", "Web", error)
+            if(error.toString()=="com.android.volley.ServerError"){
+                val toast = Toast.makeText(this, "Error del servidor", Toast.LENGTH_LONG)
+                toast.show()
+            }
+        })
+        requ.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+        queue.add(requ)
+    }
 
     //DELEGATES DE SEARCH VIEW
     override fun onQueryTextSubmit(p0: String?): Boolean {
