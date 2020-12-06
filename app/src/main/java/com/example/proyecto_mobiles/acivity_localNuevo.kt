@@ -175,7 +175,7 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
             }
 
             Thread.sleep(6_000)
-            //loadingView.show()
+            loadingView.show()
 
             NombreLocal =
                 editTextNombreLocal.text.toString()                                    ////AGREGA LA INFORMACION FINAL A LAS VARIALBLES
@@ -189,7 +189,9 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
             body.put("nombre", NombreLocal)
             body.put("descripcion", DescripcionLocal)
             body.put("usuario_id", userid)
-            body.put("estado", 0)
+            body.put("latitud", lat)
+            body.put("longitud", lon)
+            body.put("estado", 2)
             body.put("img1", imgurUrl)
             body.put("img2", imgurUrl2)
             body.put("img3", imgurUrl3)
@@ -231,8 +233,131 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
 
         }
 
+        LocalBorrador.setOnClickListener {
+
+            selectedImage?.let { it1 ->
+                selectedImage2?.let { it2 ->
+                    selectedImage3?.let { it3 ->
+                        uploadImageToImgur(
+                            it1,
+                            it2, it3
+                        )
+                    }
+                }
+            }
+
+            Thread.sleep(6_000)
+            loadingView.show()
+
+            NombreLocal =
+                editTextNombreLocal.text.toString()                                    ////AGREGA LA INFORMACION FINAL A LAS VARIALBLES
+            DescripcionLocal = editTextDescripcion.text.toString()
+            val userid: Int = usuarioSesion.ses.getID()
+
+            //////////////AGREGA LOCAL
+
+            val queue = Volley.newRequestQueue(this)
+            val body = JSONObject()
+            body.put("nombre", NombreLocal)
+            body.put("descripcion", DescripcionLocal)
+            body.put("usuario_id", userid)
+            body.put("latitud", lat)
+            body.put("longitud", lon)
+            body.put("estado", 0)
+            body.put("img1", imgurUrl)
+            body.put("img2", imgurUrl2)
+            body.put("img3", imgurUrl3)
+
+            //load.startLoadingDialog()
+            //Handler().postDelayed({load.dismissDialog()}, 6000)
+            val requ = JsonObjectRequest(
+                Request.Method.POST,
+                "https://restaurantespia.herokuapp.com/RestauranteRegistroPrueba",
+                body,
+                { response: JSONObject? ->
+                    val success = response?.getInt("success")
+                    val restaurante = response?.getJSONObject("restaurante")
+                    if (restaurante != null) {
+                        idNuevo = restaurante.getInt("id")
+                    }
+
+                    val toast = Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_LONG)
+                    toast.show()
+                },
+                { error ->
+                    error.printStackTrace()
+                    Log.e("Servicio web", "Web", error)
+                    if (error.toString() == "com.android.volley.ServerError") {
+                        val toast = Toast.makeText(this, "Error del servidor", Toast.LENGTH_LONG)
+                        toast.show()
+                    }
+                })
+            requ.setRetryPolicy(
+                DefaultRetryPolicy(
+                    5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                )
+            )
+            queue.add(requ)
+
+        }
+
     }
 
+/*
+    override fun onMapReady(googleMap: GoogleMap) {
+        // Sets the map type to be "hybrid"
+        googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+        val sydney = LatLng(-34.0, 151.0)
+        googleMap.addMarker(
+            MarkerOptions()
+                .position(sydney)
+                .title("Sydney")
+        )
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    }*/
+
+
+    override fun onMapReady(googleMap: GoogleMap?) {
+
+       val map = googleMap
+
+        if(checklocationpermission()){
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return
+            }
+            client.lastLocation.addOnCompleteListener{
+                /*client.requestLocationUpdates(locationrequest,locationcallback, Looper.getMainLooper())
+                val latitude = it.result?.latitude
+                val longitude = it.result?.longitude*/
+
+                lat = it.result?.latitude!!
+                lon = it.result?.longitude!!
+
+                val pos = LatLng(lat!!,lon!!)
+
+                map?.addMarker(MarkerOptions().position(pos).title("hola"))
+                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
+
+
+            }
+        }
+    }
 
     fun checklocationpermission() : Boolean{
         var state = false
@@ -246,29 +371,6 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
         }else state = true
 
         return state
-    }
-
-    @SuppressLint("MissingPermission")
-    override fun onMapReady(googleMap: GoogleMap?) {
-
-       val map = googleMap
-
-        if(checklocationpermission()){
-            client.lastLocation.addOnCompleteListener{
-                /*client.requestLocationUpdates(locationrequest,locationcallback, Looper.getMainLooper())
-                val latitude = it.result?.latitude
-                val longitude = it.result?.longitude*/
-
-                lat = it.result?.latitude!!
-                lon = it.result?.longitude!!
-
-                val pos = LatLng(lat!!,lon!!)
-
-                map?.addMarker(MarkerOptions().position(pos).title("hola"))
-                map?.maxZoomLevel
-                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10f))
-            }
-        }
     }
 
     private fun uploadImageToImgur(image: Bitmap, image2: Bitmap, image3: Bitmap) {

@@ -20,6 +20,11 @@ import com.android.volley.toolbox.Volley
 import com.example.proyecto_mobiles.adapter.ComentariosAdapter
 import com.example.proyecto_mobiles.model.ComentariosLista
 import com.example.proyecto_mobiles.model.ItemList
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import com.synnapps.carouselview.CarouselView
 import com.synnapps.carouselview.ImageListener
@@ -38,7 +43,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [fragment_info.newInstance] factory method to
  * create an instance of this fragment.
  */
-class fragment_info : Fragment() {
+class fragment_info : Fragment(), OnMapReadyCallback {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -76,6 +81,10 @@ class fragment_info : Fragment() {
 
       ////ARREGLO DONDE SE GUARDAN LAS 3 IMAGENES A MOSTRAS EN LA VIEW
 
+    lateinit var googleMap: GoogleMap
+
+    lateinit var mapView: MapView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -99,6 +108,7 @@ class fragment_info : Fragment() {
         viewOfLayout = inflater!!.inflate(R.layout.fragment_info, container, false)
         otraView = inflater!!.inflate(R.layout.activity_comentarios, container, false)
 
+
         val nombreL: TextView = viewOfLayout.findViewById(R.id.textViewLocal) as TextView
         val descripcionL: TextView = viewOfLayout.findViewById(R.id.textDescripcion) as TextView
         val comentarioLL: EditText = viewOfLayout.findViewById(R.id.editTextTextMultiLineComentario) as EditText
@@ -108,6 +118,8 @@ class fragment_info : Fragment() {
 
         val rateL: RatingBar = viewOfLayout.findViewById(R.id.ratingBarLocal) as RatingBar
         val rate2L: RatingBar = viewOfLayout.findViewById(R.id.ratingBar2) as RatingBar
+
+
 
 //////////////////////////////////////////////////////////
         val queue2 = Volley.newRequestQueue(getActivity())
@@ -312,6 +324,12 @@ class fragment_info : Fragment() {
         override fun setImageForPosition(position: Int, imageView: ImageView) {
             // You can use Glide or Picasso here
             Picasso.get().load(sampleImages[position]).into(imageView)
+
+
+
+            /*var mapFragment: SupportMapFragment = supportFragmentManager
+                .findFragmentById(R.id.map) as SupportMapFragment
+            mapFragment.getMapAsync(this)*/
         }
     }
 
@@ -325,6 +343,8 @@ class fragment_info : Fragment() {
         recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(context)
         recycler_view.setHasFixedSize(true)
+
+
     }
 
     private fun insertItem(view: View, v1:String, v2:Double) {
@@ -400,5 +420,25 @@ class fragment_info : Fragment() {
         requ.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
         queue.add(requ)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        mapView = view.findViewById(R.id.map)
+        mapView?.onCreate(null)
+        mapView?.onResume()
+        mapView?.getMapAsync(this)
+
+    }
+
+    override fun onMapReady(googleMap: GoogleMap?) {
+        val map = googleMap
+
+        val pos = LatLng(25.36493,-100.15434)
+
+        map?.addMarker(MarkerOptions().position(pos).title("hola"))
+        map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10f))
+
+}
 
 }
