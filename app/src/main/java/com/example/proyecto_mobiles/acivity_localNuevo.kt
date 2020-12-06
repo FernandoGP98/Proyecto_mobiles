@@ -263,9 +263,9 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
                 val pos = LatLng(lat!!,lon!!)
 
                 map?.addMarker(MarkerOptions().position(pos).title("hola"))
-                map?.maxZoomLevel
+                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
 
-                Toast.makeText(this, "locacion: " +  latitude.toString()+ ", "+ longitude.toString(), Toast.LENGTH_LONG ).show()
+
             }
         }
     }
