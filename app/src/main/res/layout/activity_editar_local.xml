@@ -200,7 +200,7 @@
                     android:layout_height="40dp"
                     android:layout_gravity="left"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="5dp"
                     android:text="Borrador" />
 
                 <Button
@@ -209,9 +209,30 @@
                     android:layout_height="40dp"
                     android:layout_gravity="right"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="30dp"
-                    android:text="Crear Local" />
+                    android:layout_marginBottom="5dp"
+                    android:text="Guardar Local" />
+
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/LocalBorrar"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="30dp"
+                    android:text="Borrar Local" />
+
+            </LinearLayout>
+
+
 
 
         </LinearLayout>
