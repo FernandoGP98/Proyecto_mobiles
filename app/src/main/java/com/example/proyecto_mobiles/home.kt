@@ -45,7 +45,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     lateinit var fragmentUsuarioRegistroDueno: fragment_usuario_registro_dueno
     lateinit var fragmentFavoritos: fragment_favoritos
     lateinit var fragmentMislocales: fragment_mislocales
-    lateinit var fragmentComentarios: fragment_comentarios
+    lateinit var fragmentLocalesPendientes: fragment_locales_pendientes
     lateinit var fragmentNuevoLocal: fragment_nuevolocal
     lateinit var search: SearchView
 
@@ -106,9 +106,17 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
         navView.setNavigationItemSelectedListener(this)
         var menu:Menu = navView.menu
-        var target:MenuItem = menu.findItem(R.id.nav_registrarDuenio)
+        var regDUenios:MenuItem = menu.findItem(R.id.nav_registrarDuenio)
+        var verPendientes:MenuItem = menu.findItem(R.id.nav_porPublicar)
+        var registrarLocal: MenuItem = menu.findItem(R.id.nav_nuevoLocal)
+        var misLocales : MenuItem = menu.findItem((R.id.nav_mislocales))
         if(ses.getRol()!=1){
-            target.setVisible(false)
+            regDUenios.setVisible(false)
+            verPendientes.setVisible(false)
+        }
+        if(ses.getRol()==3){
+            registrarLocal.setVisible(false)
+            misLocales.setVisible(false)
         }
     }
 
@@ -180,16 +188,16 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 actionBar?.title= "Favoritos"
                 search.cambiaVisibility(true)
             }
-            R.id.nav_comment ->{
-                fragmentComentarios = fragment_comentarios()
+            R.id.nav_porPublicar ->{
+                fragmentLocalesPendientes = fragment_locales_pendientes()
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.fragment_container, fragmentComentarios)
+                    .replace(R.id.fragment_container, fragmentLocalesPendientes)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .addToBackStack(null)
                     .commit()
                 val actionBar = supportActionBar
-                actionBar?.title= "Mis comentarios"
+                actionBar?.title= "Pendientes"
                 search.cambiaVisibility(true)
             }
             R.id.nav_registrarDuenio->{

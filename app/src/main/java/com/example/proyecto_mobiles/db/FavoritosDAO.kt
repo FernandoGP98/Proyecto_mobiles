@@ -5,7 +5,7 @@ import androidx.room.*
 @Dao
 interface FavoritosDAO {
 
-    @Query("SELECT nombre, descripcion, altitud, longitud FROM favoritosOff WHERE usuario_id = :usId")
+    @Query("SELECT * FROM favoritosOff WHERE usuario_id = :usId")
     fun favoritosGetAll(usId:Int):List<FavoritosEntity>?
 
     @Insert

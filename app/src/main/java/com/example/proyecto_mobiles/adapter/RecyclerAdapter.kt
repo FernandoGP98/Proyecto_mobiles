@@ -27,11 +27,11 @@ class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adap
 
     public var itemahora:String = ""
 
-    var items = ArrayList<FavoritosEntity>()
+    /*var items = ArrayList<FavoritosEntity>()
 
     fun setListData(data: ArrayList<FavoritosEntity>) {
         this.items = data
-    }
+    }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecycleHolder {
         val itemView=LayoutInflater.from(parent.context).inflate(R.layout.itemslist_view,
@@ -72,9 +72,9 @@ class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adap
         val imgItem: ImageView = itemView.iv_restaurante
         val txtRestaurante: TextView = itemView.txt_resturante
         val txtDescripcion: TextView = itemView.txt_descripcion
-        fun bing(data: FavoritosEntity){
+        /*fun bing(data: FavoritosEntity){
 
-        }
+        }*/
     }
 
     override fun getItemCount(): Int {

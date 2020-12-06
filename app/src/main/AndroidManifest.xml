@@ -23,9 +23,6 @@
             android:value="AIzaSyC7fJF4U3QqYcmKiFnD4TTMganHZbjL3lQ" />
 
         <activity
-            android:name=".comentarios"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".favoritos"
             android:theme="@style/AppTheme" />
         <activity

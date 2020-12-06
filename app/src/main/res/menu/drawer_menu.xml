@@ -26,9 +26,9 @@
             android:title="Locales favoritos" />
 
         <item
-            android:id="@+id/nav_comment"
+            android:id="@+id/nav_porPublicar"
             android:icon="@drawable/ic_comment"
-            android:title="Mis comentarios" />
+            android:title="Locales pendientes" />
 
         <item
             android:id="@+id/nav_registrarDuenio"
