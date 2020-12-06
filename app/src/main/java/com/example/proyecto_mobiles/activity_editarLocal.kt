@@ -493,7 +493,7 @@ class acivity_editarLocal : AppCompatActivity(), OnMapReadyCallback {
                 val pos = LatLng(lat!!,lon!!)
 
                 map?.addMarker(MarkerOptions().position(pos).title("hola"))
-                map?.maxZoomLevel
+                map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
 
             }
         }
