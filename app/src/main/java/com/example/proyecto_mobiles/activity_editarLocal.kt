@@ -376,57 +376,74 @@ class acivity_editarLocal : AppCompatActivity(), OnMapReadyCallback {
 
         LocalBorrar.setOnClickListener {
 
-                val queue2 = Volley.newRequestQueue(this)
-                val parametros2 = JSONObject()
-                parametros2.put("id", ResID)
-                //load.startLoadingDialog()
-                //Handler().postDelayed({load.dismissDialog()}, 6000)
-                val requ2 = JsonObjectRequest(
-                    Request.Method.POST,
-                    "https://restaurantespia.herokuapp.com/RestaurantesDeleteById",
-                    parametros2,
-                    { response: JSONObject? ->
-                        val usArray = response?.getJSONArray("restaurantes")
-                        val success = response?.getInt("success")
-
-                        if (success == 1) {
-
-                            fragmentMislocales = fragment_mislocales()
-                            supportFragmentManager
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, fragmentMislocales)
-                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                                .addToBackStack(null)
-                                .commit()
-
-                            val toast = Toast.makeText(this, "c borro", Toast.LENGTH_LONG)
-                            toast.show()
-                        } else if (success == 0) {
-                            val toast = Toast.makeText(this, "error ", Toast.LENGTH_LONG)
-                            toast.show()
-                        }
-                    },
-                    { error ->
-                        error.printStackTrace()
-                        Log.e("Servicio web", "Web", error)
-                        if (error.toString() == "com.android.volley.ServerError") {
-                            val toast =
-                                Toast.makeText(this, "Error del servidor", Toast.LENGTH_LONG)
-                            toast.show()
-                        }
-                    })
-                requ2.setRetryPolicy(
-                    DefaultRetryPolicy(
-                        5000,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-                    )
-                )
-                queue2.add(requ2)
+            val alertDialog3 =
+                AlertDialog.Builder(this, R.style.Alert)
+            alertDialog3.setMessage("¿Esta seguro que desea eliminar su cuenta?")
+                .setCancelable(false)
+                .setPositiveButton("Si", DialogInterface.OnClickListener{dialog, id->
+                    EliminarLocal()
+                    finish()
+                })
+                .setNegativeButton("No", DialogInterface.OnClickListener { dialog, id ->
+                    dialog.cancel()
+                })
+            val alert = alertDialog3.create()
+            alert.setTitle("EXITO")
+            alert.show()
 
 
         }
 
+    }
+
+    private fun EliminarLocal(){
+        val queue2 = Volley.newRequestQueue(this)
+        val parametros2 = JSONObject()
+        parametros2.put("id", ResID)
+        //load.startLoadingDialog()
+        //Handler().postDelayed({load.dismissDialog()}, 6000)
+        val requ2 = JsonObjectRequest(
+            Request.Method.POST,
+            "https://restaurantespia.herokuapp.com/RestaurantesDeleteById",
+            parametros2,
+            { response: JSONObject? ->
+                val usArray = response?.getJSONArray("restaurantes")
+                val success = response?.getInt("success")
+
+                if (success == 1) {
+
+                    fragmentMislocales = fragment_mislocales()
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragmentMislocales)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null)
+                        .commit()
+
+                    val toast = Toast.makeText(this, "c borro", Toast.LENGTH_LONG)
+                    toast.show()
+                } else if (success == 0) {
+                    val toast = Toast.makeText(this, "error ", Toast.LENGTH_LONG)
+                    toast.show()
+                }
+            },
+            { error ->
+                error.printStackTrace()
+                Log.e("Servicio web", "Web", error)
+                if (error.toString() == "com.android.volley.ServerError") {
+                    val toast =
+                        Toast.makeText(this, "Error del servidor", Toast.LENGTH_LONG)
+                    toast.show()
+                }
+            })
+        requ2.setRetryPolicy(
+            DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
+        )
+        queue2.add(requ2)
     }
 
 /*
