@@ -65,7 +65,7 @@ class fragment_home : Fragment(){
     var imagenes = arrayListOf<Int>()
     var NLocal = arrayListOf<String>()
     var DLocal = arrayListOf<String>()
-    private lateinit var viewOfLayout: View
+    //lateinit var viewOfLayout: View
     lateinit var svSearch: androidx.appcompat.widget.SearchView
     private val exampleList = generateDummyList(tamano)
     private val adapter = RecyclerAdapter(exampleList)
@@ -82,7 +82,14 @@ class fragment_home : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
 
-        viewOfLayout = inflater!!.inflate(R.layout.fragment_home, container, false)
+        var viewOfLayout: View = inflater.inflate(R.layout.fragment_home, container, false)
+
+
+        var botonBuscar:View = requireActivity().findViewById(R.id.buttonBusca)
+        botonBuscar.setOnClickListener {
+            val toast = Toast.makeText(requireActivity(), "Boton busqueda", Toast.LENGTH_LONG)
+            toast.show()
+        }
 
         return viewOfLayout
     }

@@ -25,6 +25,7 @@ class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adap
 
     public var mItems: List<ItemList> = itemsList
 
+
     public var itemahora:String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecycleHolder {
