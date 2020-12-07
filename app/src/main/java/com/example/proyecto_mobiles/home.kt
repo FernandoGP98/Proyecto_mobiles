@@ -320,7 +320,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             R.id.nav_eliminarFavoritos->{
                 val alertDialog3 =
                     AlertDialog.Builder(this, R.style.Alert)
-                alertDialog3.setMessage("¿Esta seguro que desea eliminar su cuenta?")
+                alertDialog3.setMessage("¿Esta seguro que desea eliminar sus favoritos?")
                     .setCancelable(false)
                     .setPositiveButton("Si", DialogInterface.OnClickListener{dialog, id->
                         val favDao = RoomAppDB.getAppDatabase(this)?.favoritosDAO()
