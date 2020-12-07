@@ -28,13 +28,16 @@ import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.proyecto_mobiles.adapter.FavoritosRecycler
 import com.example.proyecto_mobiles.adapter.RecyclerAdapter
 import com.example.proyecto_mobiles.model.ItemList
+import com.example.proyecto_mobiles.usuarioSesion.Companion.checkInternet
 import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.fragment_favoritos_off.*
 import kotlinx.android.synthetic.main.nav_header.*
 import org.json.JSONObject
 import org.w3c.dom.Text
@@ -44,6 +47,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     lateinit var fragmentPerfil: fragment_perfil
     lateinit var fragmentUsuarioRegistroDueno: fragment_usuario_registro_dueno
     lateinit var fragmentFavoritos: fragment_favoritos
+    lateinit var fragmentFavoritosOff: fragment_favoritos_off
     lateinit var fragmentMislocales: fragment_mislocales
     lateinit var fragmentLocalesPendientes: fragment_locales_pendientes
     lateinit var fragmentNuevoLocal: fragment_nuevolocal
@@ -75,13 +79,23 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         nav_view.setNavigationItemSelectedListener(this)
 
 
-        fragmentHome = fragment_home()
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, fragmentHome)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
-        search = findViewById(R.id.sv_BuscarGeneral)
+        if(checkInternet.isOnline()){
+            fragmentHome = fragment_home()
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragmentHome)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit()
+            search = findViewById(R.id.sv_BuscarGeneral)
+        }else{
+            fragmentFavoritosOff = fragment_favoritos_off()
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragmentFavoritosOff)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit()
+            search = findViewById(R.id.sv_BuscarGeneral)
+        }
 
         this.sv_BuscarGeneral.setOnQueryTextListener(this)
 

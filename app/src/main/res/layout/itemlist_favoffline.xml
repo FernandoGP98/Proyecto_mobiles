@@ -31,6 +31,7 @@
                 android:id="@+id/txt_resturante"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Titutlo"
                 android:textColor="@color/colorText"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -39,9 +40,22 @@
                 android:id="@+id/txt_descripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="descripcion"
                 android:textColor="@color/colorText"
                 android:textSize="12dp" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/btn_eliminar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Eliminar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
     </LinearLayout>

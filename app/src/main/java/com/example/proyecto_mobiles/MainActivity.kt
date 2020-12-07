@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,6 +18,9 @@ import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.proyecto_mobiles.db.RoomAppDB
+import com.example.proyecto_mobiles.db.UsuarioEntity
+import com.example.proyecto_mobiles.usuarioSesion.Companion.checkInternet
 import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,23 +29,23 @@ import kotlinx.android.synthetic.main.fragment_perfil.*
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-        /*INTERNET
-        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true*/
-
-        checarValoresUsuario()
 
         val btnRegistrarse : TextView = findViewById(R.id.txt_Registrate)
         btnRegistrarse.setOnClickListener {
             val intent = Intent(this, usuario_registro::class.java)
             startActivity(intent)
         }
+
+        if(!checkInternet.isOnline()){
+            val toast = Toast.makeText(this, "Modo offline", Toast.LENGTH_LONG)
+            toast.show()
+        }
+
+        checarValoresUsuario()
 
         val btnIngresar : TextView = findViewById(R.id.btn_ingresar)
         btnIngresar.setOnClickListener {
@@ -65,11 +69,44 @@ class MainActivity : AppCompatActivity() {
                 alert.setTitle("Acceso denegado")
                 alert.show()
             }else if(Correo != ""  && Pass != ""){
-                usuarioGetByCorreoAndPass(Correo, Pass)
+                if(checkInternet.isOnline()){
+                    usuarioGetByCorreoAndPass(Correo, Pass)
+                }else{
+                    getUsuarioOff(Correo, Pass)
+                }
             }
         }
     }
 
+    fun getUsuarioOff(correo: String, pass: String){
+        val usDao = RoomAppDB.getAppDatabase(this)?.usuarioDAO()
+        val List = usDao?.usuarioGetAll(correo, pass)
+        val sb = StringBuffer()
+        if(!List.isNullOrEmpty()) {
+            List?.forEach {
+                ses.saveName(it.nombre)
+                ses.saveMail(it.correo)
+                ses.savePass(it.password)
+                ses.saveRol(it.rol_id)
+                ses.saveID(it.id)
+            }
+            val toast = Toast.makeText(this, "Bienvenido "+ses.getName(), Toast.LENGTH_LONG)
+            toast.show()
+            irHome()
+        }else{
+            val alertDialog3 =
+                AlertDialog.Builder(this, R.style.Alert)
+            alertDialog3.setMessage("Correo o contraseña incorrecto")
+                .setCancelable(false)
+                .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
+                    dialog.cancel()
+                })
+            val alert = alertDialog3.create()
+            alert.setTitle("Acceso denegado")
+            alert.show()
+        }
+
+    }
 
     fun checarValoresUsuario(){
         if(ses.getMail() != "correo vacio" ){

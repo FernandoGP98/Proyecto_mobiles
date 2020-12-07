@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [FavoritosEntity::class], version=1)
+@Database(entities = [FavoritosEntity::class, UsuarioEntity::class], version=1)
 abstract class RoomAppDB: RoomDatabase() {
 
     abstract fun favoritosDAO(): FavoritosDAO?
-
+    abstract  fun usuarioDAO(): UsuarioDAO?
     companion object{
         private var INSTANCE: RoomAppDB?=null
 

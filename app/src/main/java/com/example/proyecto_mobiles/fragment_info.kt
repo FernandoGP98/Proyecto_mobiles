@@ -18,8 +18,11 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.proyecto_mobiles.adapter.ComentariosAdapter
+import com.example.proyecto_mobiles.db.FavoritosEntity
+import com.example.proyecto_mobiles.db.RoomAppDB
 import com.example.proyecto_mobiles.model.ComentariosLista
 import com.example.proyecto_mobiles.model.ItemList
+import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
@@ -245,6 +248,10 @@ class fragment_info : Fragment(), OnMapReadyCallback {
                 val success = response?.getInt("success")
 
                 if(success==1 ){
+                    val favDao= RoomAppDB.getAppDatabase(requireActivity())?.favoritosDAO()
+                    val favEntity = FavoritosEntity(0, nombreL.text.toString(), descripcionL.text.toString(),
+                        "0","0", ses.getID())
+                    val id = favDao?.favoritosRegistrar(favEntity)
                     val toast = Toast.makeText(getActivity(), "Favorito Guardado", Toast.LENGTH_LONG)
                     toast.show()
                 }else if(success==0){
