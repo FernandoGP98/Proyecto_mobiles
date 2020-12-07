@@ -81,7 +81,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
 
 
-        this.sv_BuscarGeneral.setOnQueryTextListener(this)
+        //this.sv_BuscarGeneral.setOnQueryTextListener(this)
 
         /*PARA PODER USAR ELEMENTOS DENTRO DE DEL SIDEBAR HAY QUE INICIALIZAR LA NAVBAR
         * Y ASI ACCEDER A ESOS ELEMENTOS
@@ -127,7 +127,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 .replace(R.id.fragment_container, fragmentHome)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit()
-            search = findViewById(R.id.sv_BuscarGeneral)
+            //search = findViewById(R.id.sv_BuscarGeneral)
         }else{
             fragmentFavoritosOff = fragment_favoritos_off()
             supportFragmentManager
@@ -137,7 +137,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 .commit()
             val actionBar = supportActionBar
             actionBar?.title = "Favoritos"
-            search = findViewById(R.id.sv_BuscarGeneral)
+            //search = findViewById(R.id.sv_BuscarGeneral)
             search.cambiaVisibility(false)
 
             navperfil.setVisible(false)
