@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity() {
                     val id = usDao?.usuarioRegistrar(usEntity)
                 }
 
-                val toast = Toast.makeText(this, "Bienvenido "+usuario.getString("id"), Toast.LENGTH_LONG)
+                val toast = Toast.makeText(this, "Bienvenido "+usuario.getString("nombre"), Toast.LENGTH_LONG)
                 toast.show()
                 irHome()
             }else if(success==0){

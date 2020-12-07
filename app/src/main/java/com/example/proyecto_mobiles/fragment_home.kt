@@ -97,54 +97,53 @@ class fragment_home : Fragment(){
                 "https://restaurantespia.herokuapp.com/RestaurantesFiltroNombre",
                 parametros,
                 { response: JSONObject? ->
-                    val usArray = response?.getJSONArray("restaurantes")
                     val success = response?.getInt("success")
+                    if(success==1) {
+                        val usArray = response?.getJSONArray("restaurantes")
+                        exampleList.clear()
+                        NombreLocalDB.clear()
+                        DescripcionLocalDB.clear()
+                        NombreLocalDB.clear()
+                        DescripcionLocalDB.clear()
+                        imagenesDB.clear()
+                        imagenesDB2.clear()
+                        imagenesDB3.clear()
+                        Ridd.clear()
 
-                    exampleList.clear()
-                    NombreLocalDB.clear()
-                    DescripcionLocalDB.clear()
-                    NombreLocalDB.clear()
-                    DescripcionLocalDB.clear()
-                    imagenesDB.clear()
-                    imagenesDB2.clear()
-                    imagenesDB3.clear()
-                    Ridd.clear()
+                        for (i in 0..(usArray!!.length() - 1)) {
+                            val item = usArray!!.getJSONObject(i)
+                            val nombre = item.getString("nombre")
+                            val descripc = item.getString("descripcion")
+                            val calific = item.getString("calificacion")
+                            val Rid = item.getString("id")
+                            val img = item.getString("img1")
+                            val img2 = item.getString("img2")
+                            val img3 = item.getString("img3")
 
-                    for (i in 0..(usArray!!.length() - 1)) {
-                        val item = usArray!!.getJSONObject(i)
-                        val nombre = item.getString("nombre")
-                        val descripc = item.getString("descripcion")
-                        val calific = item.getString("calificacion")
-                        val Rid = item.getString("id")
-                        val img = item.getString("img1")
-                        val img2 = item.getString("img2")
-                        val img3 = item.getString("img3")
+                            NombreLocalDB.add(nombre)
+                            DescripcionLocalDB.add(descripc)
+                            imagenesDB.add(img)
+                            imagenesDB2.add(img2)
+                            imagenesDB3.add(img3)
+                            Ridd.add(Rid.toInt())
+                        }
 
-                        NombreLocalDB.add(nombre)
-                        DescripcionLocalDB.add(descripc)
-                        imagenesDB.add(img)
-                        imagenesDB2.add(img2)
-                        imagenesDB3.add(img3)
-                        Ridd.add(Rid.toInt())
-                    }
+                        for (i in 0..(usArray!!.length() - 1)) {
+                            val newItem =
+                                ItemList(
+                                    imagenesDB[i],
+                                    imagenesDB2[i],
+                                    imagenesDB3[i],
+                                    NombreLocalDB[i],
+                                    DescripcionLocalDB[i],
+                                    Ridd[i]
+                                )
+                            exampleList.add(i, newItem)
 
-                    for (i in 0..(usArray!!.length() - 1)) {
-                        val newItem =
-                            ItemList(
-                                imagenesDB[i],
-                                imagenesDB2[i],
-                                imagenesDB3[i],
-                                NombreLocalDB[i],
-                                DescripcionLocalDB[i],
-                                Ridd[i]
-                            )
-                        exampleList.add(i, newItem)
+                            adapter.notifyDataSetChanged()
 
-                        adapter.notifyDataSetChanged()
-
-                    }
-
-                    if (success == 0) {
+                        }
+                    }else if (success == 0) {
                         val toast =
                             Toast.makeText(getActivity(), "No hay restaurantes", Toast.LENGTH_LONG)
                         toast.show()

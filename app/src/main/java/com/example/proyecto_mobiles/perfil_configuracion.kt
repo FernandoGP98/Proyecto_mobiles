@@ -161,6 +161,9 @@ class perfil_configuracion : AppCompatActivity() {
         }
         btn_imagenAct.setOnClickListener {
 
+            //Picasso.get().load(imgurUrl).into(iv_foto)
+            uploadImageToImgur(selectedImage)
+
             Thread.sleep(6_000)
 
             val queue = Volley.newRequestQueue(this)
@@ -264,8 +267,8 @@ class perfil_configuracion : AppCompatActivity() {
                 if (results != null) {
                     selectedImage = results
                     imageViewEdit.setImageBitmap(selectedImage)
-                    Picasso.get().load(imgurUrl).into(iv_foto)
-                    uploadImageToImgur(selectedImage)
+                    /*Picasso.get().load(imgurUrl).into(iv_foto)
+                    uploadImageToImgur(selectedImage)*/
                 }
     }
 

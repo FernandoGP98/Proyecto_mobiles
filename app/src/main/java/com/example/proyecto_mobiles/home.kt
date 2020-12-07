@@ -10,8 +10,7 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.SearchView
+import android.widget.*
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -19,8 +18,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.FragmentTransitionImpl
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -52,6 +49,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     lateinit var fragmentLocalesPendientes: fragment_locales_pendientes
     lateinit var fragmentNuevoLocal: fragment_nuevolocal
     lateinit var search: SearchView
+    lateinit var searchButton:Button
+    lateinit var searchText: TextView
 
     var adapterList:RecyclerAdapter? =  null
 
@@ -127,6 +126,10 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                 .replace(R.id.fragment_container, fragmentHome)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit()
+            searchButton =findViewById(R.id.buttonBusca)
+            searchText = findViewById(R.id.filtroAbuscar)
+            searchText.cambiaVisibility(true)
+            searchButton.cambiaVisibility(true)
             //search = findViewById(R.id.sv_BuscarGeneral)
         }else{
             fragmentFavoritosOff = fragment_favoritos_off()
@@ -150,7 +153,14 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }
     }
 
-    fun View.cambiaVisibility(visible: Boolean) {
+    fun TextView.cambiaVisibility(visible: Boolean) {
+        if (visible) {
+            visibility = View.VISIBLE
+        } else {
+            visibility = View.INVISIBLE
+        }
+    }
+    fun Button.cambiaVisibility(visible: Boolean) {
         if (visible) {
             visibility = View.VISIBLE
         } else {
@@ -179,6 +189,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                         .commit()
                     val actionBar = supportActionBar
                     actionBar?.title = "Principal"
+                    searchText.cambiaVisibility(true)
+                    searchButton.cambiaVisibility(true)
                     //search.cambiaVisibility(true)
                 }else{
                     fragmentFavoritosOff = fragment_favoritos_off()
@@ -189,6 +201,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                         .commit()
                     val actionBar = supportActionBar
                     actionBar?.title = "Favoritos"
+                    searchText.cambiaVisibility(false)
+                    searchButton.cambiaVisibility(false)
                     //search.cambiaVisibility(false)
                 }
             }
@@ -216,6 +230,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .commit()
                 val actionBar = supportActionBar
                 actionBar?.title= "Mis Locales"
+                searchText.cambiaVisibility(false)
+                searchButton.cambiaVisibility(false)
                 //search.cambiaVisibility(true)
             }
             R.id.nav_favoritos->{
@@ -228,6 +244,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .commit()
                 val actionBar = supportActionBar
                 actionBar?.title= "Favoritos"
+                searchText.cambiaVisibility(false)
+                searchButton.cambiaVisibility(false)
                 //search.cambiaVisibility(true)
             }
             R.id.nav_porPublicar ->{
@@ -240,6 +258,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .commit()
                 val actionBar = supportActionBar
                 actionBar?.title= "Pendientes"
+                searchText.cambiaVisibility(false)
+                searchButton.cambiaVisibility(false)
                 //search.cambiaVisibility(true)
             }
             R.id.nav_registrarDuenio->{
@@ -252,6 +272,8 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .commit()
                 val actionBar = supportActionBar
                 actionBar?.title= "Registrar dueño"
+                searchText.cambiaVisibility(false)
+                searchButton.cambiaVisibility(false)
                 //.cambiaVisibility(false)
             }
             R.id.nav_nuevoLocal->{

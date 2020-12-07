@@ -15,6 +15,8 @@ import com.example.proyecto_mobiles.db.FavoritosEntity
 import com.example.proyecto_mobiles.fragment_info
 import com.example.proyecto_mobiles.model.ItemList
 import com.example.proyecto_mobiles.usuarioSesion
+import com.example.proyecto_mobiles.usuarioSesion.Companion.checkInternet
+import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 import com.squareup.picasso.Picasso
 
 import kotlinx.android.synthetic.main.itemslist_view.view.*
@@ -42,22 +44,24 @@ class RecyclerAdapter(private val itemsList: List<ItemList>) : RecyclerView.Adap
         holder.txtDescripcion.text=currentItem.descripcion
         holder.itemView.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?){
-                val itemahora = currentItem.id
-                val imagenahora1 = currentItem.imagen
-                val imagenahora2 = currentItem.imagen2
-                val imagenahora3 = currentItem.imagen3
-                usuarioSesion.ses.saveRestaurante(itemahora)
-                usuarioSesion.ses.saveRestauranteimg1(imagenahora1)
-                usuarioSesion.ses.saveRestauranteimg2(imagenahora2)
-                usuarioSesion.ses.saveRestauranteimg3(imagenahora3)
-                val activity=v!!.context as AppCompatActivity
-                val fragmentInfo=fragment_info()
-                activity.supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragmentInfo)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .addToBackStack(null)
-                    .commit()
+                if(checkInternet.isOnline()) {
+                    val itemahora = currentItem.id
+                    val imagenahora1 = currentItem.imagen
+                    val imagenahora2 = currentItem.imagen2
+                    val imagenahora3 = currentItem.imagen3
+                    ses.saveRestaurante(itemahora)
+                    ses.saveRestauranteimg1(imagenahora1)
+                    ses.saveRestauranteimg2(imagenahora2)
+                    ses.saveRestauranteimg3(imagenahora3)
+                    val activity = v!!.context as AppCompatActivity
+                    val fragmentInfo = fragment_info()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragmentInfo)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null)
+                        .commit()
+                }
             }
         })
     }

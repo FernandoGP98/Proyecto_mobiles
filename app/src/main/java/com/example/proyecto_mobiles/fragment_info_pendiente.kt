@@ -75,7 +75,7 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
     var tamano:Int = textoDB.size
 
     private val exampleList = generateDummyList(tamano)
-    private val adapter = ComentariosAdapter(exampleList)
+    //private val adapter = ComentariosAdapter(exampleList)
 
     var sampleImages = arrayListOf<String>( )
 
@@ -99,7 +99,7 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
         fun newInstance() = fragment_info_pendiente()
     }
 
-    private lateinit var viewModel: FragmentComentariosViewModel
+    //private lateinit var viewModel: FragmentComentariosViewModel
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -108,23 +108,20 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
     ): View? {
         // Inflate the layout for this fragment
         viewOfLayout = inflater!!.inflate(R.layout.fragment_info_pendiente, container, false)
-        otraView = inflater!!.inflate(R.layout.activity_comentarios, container, false)
+        //otraView = inflater!!.inflate(R.layout.activity_comentarios, container, false)
 
 
         val nombreL: TextView = viewOfLayout.findViewById(R.id.textViewLocal) as TextView
         val descripcionL: TextView = viewOfLayout.findViewById(R.id.textDescripcion) as TextView
-        val comentarioLL: EditText = viewOfLayout.findViewById(R.id.editTextTextMultiLineComentario) as EditText
+        //val comentarioLL: EditText = viewOfLayout.findViewById(R.id.editTextTextMultiLineComentario) as EditText
 
-        val buttonComentario: Button = viewOfLayout.findViewById(R.id.buttonComentar) as Button
+        //val buttonComentario: Button = viewOfLayout.findViewById(R.id.buttonComentar) as Button
         val buttonPalFav: Button = viewOfLayout.findViewById(R.id.buttonFav) as Button
-
-        val rateL: RatingBar = viewOfLayout.findViewById(R.id.ratingBarLocal) as RatingBar
-        val rate2L: RatingBar = viewOfLayout.findViewById(R.id.ratingBar2) as RatingBar
 
 
 
 //////////////////////////////////////////////////////////
-        val queue2 = Volley.newRequestQueue(getActivity())
+        /*val queue2 = Volley.newRequestQueue(getActivity())
         val parametros2 = JSONObject()
         parametros2.put("restaurante_id", usuarioSesion.ses.getRestaurante())
         //load.startLoadingDialog()
@@ -151,7 +148,7 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
             }
         })
         requ2.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
-        queue2.add(requ2)
+        queue2.add(requ2)*/
 
         ////////////////////////////////////////////////
 
@@ -181,7 +178,7 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
                     descripcionL.setText(descripcionLocal)
                     val simpleArray = calificacionDB
                     averageFav = simpleArray.average()
-                    rateL.setRating(averageFav.toFloat())
+
 
                 }
                 espera = true
@@ -275,11 +272,11 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(FragmentComentariosViewModel::class.java)
+        //viewModel = ViewModelProviders.of(this).get(FragmentComentariosViewModel::class.java)
 
-        recycler_view.adapter = adapter
+        /*recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(context)
-        recycler_view.setHasFixedSize(true)
+        recycler_view.setHasFixedSize(true)*/
 
 
     }
@@ -288,20 +285,20 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
 
         //val index: Int = Random.nextInt(8)
 
-        val newItem = ComentariosLista(v1, v2)
+        /*val newItem = ComentariosLista(v1, v2)
 
         exampleList.add(index, newItem)
-        adapter.notifyItemInserted(index)
+        adapter.notifyItemInserted(index)*/
     }
 
     private fun generateDummyList(size: Int): ArrayList<ComentariosLista> {
 
         val list = ArrayList<ComentariosLista>()
 
-        for (i in 0 until 2) {
+        /*for (i in 0 until 2) {
             val item = ComentariosLista("nada", 5.0)
             list += item
-        }
+        }*/
 
         return list
     }
