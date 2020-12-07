@@ -62,6 +62,8 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
     var imagenLocal3: String = ""
     var espera = false
     var averageFav:Double = 0.0
+    var x:Double = 0.0
+    var y:Double = 0.0
 
     var CalificacionesDB = arrayListOf<Double>(
     )
@@ -140,14 +142,6 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
                 calificacionDB.add(calificacionBBB.toDouble())
 
             }
-
-            val toast = Toast.makeText(getActivity(), "resultado:" +averageFav, Toast.LENGTH_LONG)
-            toast.show()
-
-            if(success==0){
-                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
-                toast.show()
-            }
         }, { error ->
             error.printStackTrace()
             Log.e("Servicio web", "Web", error)
@@ -179,6 +173,8 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
                     imagenLocal1 = item.getString("img1")
                     imagenLocal2 = item.getString("img2")
                     imagenLocal3 = item.getString("img3")
+                    x = item.getString("latitud").toDouble()
+                    y = item.getString("longitud").toDouble()
                     //calificacionBBB = item.getString("calificacion")
                     ResID = item.getString("id").toInt()
                     nombreL.setText(nombreLocal)
@@ -192,7 +188,7 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
             }
 
             if(success==0){
-                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
+                val toast = Toast.makeText(getActivity(), "No hay pendientes", Toast.LENGTH_LONG)
                 toast.show()
             }
         }, { error ->
@@ -238,7 +234,7 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
                 { response: JSONObject? ->
                     val success = response?.getInt("success")
 
-                    val toast = Toast.makeText(getActivity(), "Registro Exitoso", Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(getActivity(), "Publicacion exitosa", Toast.LENGTH_LONG)
                     toast.show()
                 },
                 { error ->
@@ -323,7 +319,7 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap?) {
         val map = googleMap
 
-        val pos = LatLng(25.36493,-100.15434)
+        val pos = LatLng(x,y)
 
         map?.addMarker(MarkerOptions().position(pos).title("hola"))
         map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10f))

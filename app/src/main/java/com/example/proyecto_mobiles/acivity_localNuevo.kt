@@ -110,7 +110,7 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
             override fun onLocationResult(locationresult: LocationResult?){
                 locationresult?: return
                 for(location in locationresult.locations){
-                    Toast.makeText(this@acivity_localNuevo , "locacion: " +  location.latitude.toString()+ ", "+ location.longitude.toString(), Toast.LENGTH_LONG ).show()
+
                 }
             }
         }

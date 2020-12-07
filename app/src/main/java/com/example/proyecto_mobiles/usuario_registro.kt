@@ -18,6 +18,8 @@ import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.proyecto_mobiles.db.RoomAppDB
+import com.example.proyecto_mobiles.db.UsuarioEntity
 import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 import kotlinx.android.synthetic.main.activity_usuario_registro.*
 import org.json.JSONObject
@@ -142,6 +144,9 @@ class usuario_registro : AppCompatActivity() {
                 ses.savePass(usuario.getString("password"))
                 ses.saveRol(usuario.getInt("rol_id"))
                 ses.saveID(usuario.getInt("id"))
+                val usDao=RoomAppDB.getAppDatabase(this)?.usuarioDAO()
+                val usEntity = UsuarioEntity(ses.getID(), ses.getName(), ses.getMail(), ses.getPass(), ses.getRol())
+                val id = usDao?.usuarioRegistrar(usEntity)
                 val toast = Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_SHORT)
                 toast.show()
             }

@@ -2,23 +2,28 @@ package com.example.proyecto_mobiles
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.DefaultRetryPolicy
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import com.example.proyecto_mobiles.adapter.RecyclerAdapter3
+import com.example.proyecto_mobiles.adapter.FavoritosRecycler
+import com.example.proyecto_mobiles.adapter.RecyclerAdapter
+import com.example.proyecto_mobiles.db.FavoritosEntity
+import com.example.proyecto_mobiles.db.RoomAppDB
 import com.example.proyecto_mobiles.model.ItemList
+import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
+import kotlinx.android.synthetic.main.activity_favoritos.*
+import kotlinx.android.synthetic.main.fragment_favoritos.*
+import kotlinx.android.synthetic.main.fragment_favoritos_off.*
+import kotlinx.android.synthetic.main.fragment_favoritos_off.recycler_view
 import kotlinx.android.synthetic.main.fragment_home.*
-import org.json.JSONObject
 
-class fragment_locales_pendientes : Fragment() {
+class fragment_favoritos_off : Fragment(){
 
     var imagenesDB = arrayListOf<String>(                                                                ///ARREGLO CON LAS IMAGENE DE LA BASE DE DATOS
 
@@ -56,30 +61,41 @@ class fragment_locales_pendientes : Fragment() {
     var imagenes = arrayListOf<Int>()
     var NLocal = arrayListOf<String>()
     var DLocal = arrayListOf<String>()
+
     private lateinit var viewOfLayout: View
     lateinit var svSearch: androidx.appcompat.widget.SearchView
     private val exampleList = generateDummyList(tamano)
-    private val adapter = RecyclerAdapter3(exampleList)
+    private val adapter = RecyclerAdapter(exampleList)
     var itemList: List<Int> = ArrayList()
 
+    //private val exampleList = generateDummyList()
+
     companion object {
-        fun newInstance() = fragment_locales_pendientes()
+        fun newInstance() = fragment_favoritos_off()
     }
 
-    private lateinit var viewModel: FragmentLocalesPendientesViewModel
+    private lateinit var viewModel: FragmentFavoritosOffViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_locales_pendientes, container, false)
+        viewOfLayout= inflater.inflate(R.layout.fragment_favoritos_off, container, false)
+
+        return viewOfLayout
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 
-        usuarioGetByCorreoAndPass()
+        favGetOff()
+
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(FragmentLocalesPendientesViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(FragmentFavoritosOffViewModel::class.java)
+
+        /*recycler_view.adapter = adapter
+        recycler_view.layoutManager = LinearLayoutManager(context)
+        recycler_view.setHasFixedSize(true)*/
+
         recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(context)
         recycler_view.setHasFixedSize(true)
@@ -96,67 +112,45 @@ class fragment_locales_pendientes : Fragment() {
         return list
     }
 
-    private fun LlenaLista(value: Int) {
-
-    }
-
-    private fun usuarioGetByCorreoAndPass() {
-
-        val queue = Volley.newRequestQueue(getActivity())
-        val parametros = JSONObject()
-        //load.startLoadingDialog()
-        //Handler().postDelayed({load.dismissDialog()}, 6000)
-        val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/RestaurantesGetAllPendientes",parametros,{
-                response: JSONObject?->
-            val usArray = response?.getJSONArray("restaurantes")
-            val success = response?.getInt("success")
-
+    private fun favGetOff(){
+        val favDao = RoomAppDB.getAppDatabase(requireActivity())?.favoritosDAO()
+        val List = favDao?.favoritosGetAll(ses.getID())
+        val sb = StringBuffer()
+        if(!List.isNullOrEmpty()) {
             exampleList.clear()
             NombreLocalDB.clear()
             DescripcionLocalDB.clear()
-
-            for (i in 0..(usArray!!.length() - 1)) {
-                val item = usArray!!.getJSONObject(i)
-                val nombre = item.getString("nombre")
-                val descripc = item.getString("descripcion")
-                val calific = item.getString("calificacion")
-                val Rid = item.getString("id")
-                val img = item.getString("img1")
-                val img2 = item.getString("img2")
-                val img3 = item.getString("img3")
-
+            List?.forEach {
+                val nombre = it.nombre
+                var descripcion= it.descripcion+", Latitud: "+it.altitud+", Longitud: "+it.longitud
+                val rid = it.id
+                val img = "img1"
+                val img2 = "img2"
+                val img3 = "img3"
                 NombreLocalDB.add(nombre)
-                DescripcionLocalDB.add(descripc)
+                DescripcionLocalDB.add(descripcion)
                 imagenesDB.add(img)
                 imagenesDB2.add(img2)
                 imagenesDB3.add(img3)
-                Ridd.add(Rid.toInt())
+                Ridd.add(rid.toInt())
             }
-
-            for (i in 0..(usArray!!.length() - 1)) {
+            var i =0
+            List?.forEach {
                 val newItem =
-                    ItemList(imagenesDB[i], imagenesDB2[i], imagenesDB3[i], NombreLocalDB[i], DescripcionLocalDB[i], Ridd[i])
+                    ItemList(
+                        imagenesDB[i],
+                        imagenesDB2[i],
+                        imagenesDB3[i],
+                        NombreLocalDB[i],
+                        DescripcionLocalDB[i],
+                        Ridd[i]
+                    )
                 exampleList.add(i, newItem)
 
                 adapter.notifyDataSetChanged()
-
+                i++
             }
-
-           if(success==0){
-                val toast = Toast.makeText(getActivity(), "No hay restaurantes pendientes", Toast.LENGTH_LONG)
-                toast.show()
-            }
-        }, { error ->
-            error.printStackTrace()
-            Log.e("Servicio web", "Web", error)
-            if(error.toString()=="com.android.volley.ServerError"){
-                val toast = Toast.makeText(getActivity(), "Error del servidor", Toast.LENGTH_LONG)
-                toast.show()
-            }
-        })
-        requ.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
-        queue.add(requ)
-
+        }
     }
 
 }

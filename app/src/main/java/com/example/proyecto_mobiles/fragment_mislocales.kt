@@ -163,10 +163,9 @@ class fragment_mislocales : Fragment() {
                         adapter.notifyDataSetChanged()
 
                     }
-                    val toast = Toast.makeText(getActivity(), "cargo Lista", Toast.LENGTH_LONG)
-                    toast.show()
+
                 } else if (success == 0) {
-                    val toast = Toast.makeText(getActivity(), "error ", Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(getActivity(), "No tienes restaurantes", Toast.LENGTH_LONG)
                     toast.show()
                 }
             },

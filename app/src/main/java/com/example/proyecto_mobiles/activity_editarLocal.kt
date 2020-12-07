@@ -136,7 +136,7 @@ class acivity_editarLocal : AppCompatActivity(), OnMapReadyCallback {
             override fun onLocationResult(locationresult: LocationResult?){
                 locationresult?: return
                 for(location in locationresult.locations){
-                    Toast.makeText(this@acivity_editarLocal , "locacion: " +  location.latitude.toString()+ ", "+ location.longitude.toString(), Toast.LENGTH_LONG ).show()
+
                 }
             }
         }
@@ -195,7 +195,7 @@ class acivity_editarLocal : AppCompatActivity(), OnMapReadyCallback {
             }
 
             if(success==0){
-                val toast = Toast.makeText(this, "error", Toast.LENGTH_LONG)
+                val toast = Toast.makeText(this, "No hay restaurantes", Toast.LENGTH_LONG)
                 toast.show()
             }
         }, { error ->
@@ -283,7 +283,7 @@ class acivity_editarLocal : AppCompatActivity(), OnMapReadyCallback {
                 { response: JSONObject? ->
                     val success = response?.getInt("success")
 
-                    val toast = Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(this, "Local guardado", Toast.LENGTH_LONG)
                     toast.show()
                 },
                 { error ->
@@ -351,7 +351,7 @@ class acivity_editarLocal : AppCompatActivity(), OnMapReadyCallback {
                 { response: JSONObject? ->
                     val success = response?.getInt("success")
 
-                    val toast = Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(this, "Borrador guardado", Toast.LENGTH_LONG)
                     toast.show()
                 },
                 { error ->
@@ -377,7 +377,7 @@ class acivity_editarLocal : AppCompatActivity(), OnMapReadyCallback {
 
             val alertDialog3 =
                 AlertDialog.Builder(this, R.style.Alert)
-            alertDialog3.setMessage("¿Esta seguro que desea eliminar su cuenta?")
+            alertDialog3.setMessage("¿Esta seguro que desea eliminar el restaurante?")
                 .setCancelable(false)
                 .setPositiveButton("Si", DialogInterface.OnClickListener{dialog, id->
                     EliminarLocal()
@@ -419,10 +419,10 @@ class acivity_editarLocal : AppCompatActivity(), OnMapReadyCallback {
                         .addToBackStack(null)
                         .commit()
 
-                    val toast = Toast.makeText(this, "c borro", Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(this, "Restaurante eliminado", Toast.LENGTH_LONG)
                     toast.show()
                 } else if (success == 0) {
-                    val toast = Toast.makeText(this, "error ", Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(this, "No se pudo borrar el restaurante ", Toast.LENGTH_LONG)
                     toast.show()
                 }
             },
@@ -491,7 +491,7 @@ class acivity_editarLocal : AppCompatActivity(), OnMapReadyCallback {
 
                 val pos = LatLng(lat!!,lon!!)
 
-                map?.addMarker(MarkerOptions().position(pos).title("hola"))
+                map?.addMarker(MarkerOptions().position(pos).title(editTextNombreLocal.text.toString()))
                 map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
 
             }

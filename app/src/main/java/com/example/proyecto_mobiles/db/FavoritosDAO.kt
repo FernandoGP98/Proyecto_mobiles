@@ -8,6 +8,9 @@ interface FavoritosDAO {
     @Query("SELECT * FROM favoritosOff WHERE usuario_id = :usId")
     fun favoritosGetAll(usId:Int):List<FavoritosEntity>?
 
+    @Query("SELECT * FROM favoritosOff WHERE id = :rId")
+    fun favoritosGetById(rId:Int):List<FavoritosEntity>?
+
     @Insert
     fun favoritosRegistrar(favorito: FavoritosEntity?)
 

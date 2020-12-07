@@ -163,10 +163,8 @@ class fragment_favoritos : Fragment() {
                         adapter.notifyDataSetChanged()
 
                     }
-                    val toast = Toast.makeText(getActivity(), "cargo Lista", Toast.LENGTH_LONG)
-                    toast.show()
                 } else if (success == 0) {
-                    val toast = Toast.makeText(getActivity(), "error ", Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(getActivity(), "No hay restaurantes favoritos", Toast.LENGTH_LONG)
                     toast.show()
                 }
             },
