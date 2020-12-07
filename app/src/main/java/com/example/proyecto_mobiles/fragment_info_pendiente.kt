@@ -140,14 +140,6 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
                 calificacionDB.add(calificacionBBB.toDouble())
 
             }
-
-            val toast = Toast.makeText(getActivity(), "resultado:" +averageFav, Toast.LENGTH_LONG)
-            toast.show()
-
-            if(success==0){
-                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
-                toast.show()
-            }
         }, { error ->
             error.printStackTrace()
             Log.e("Servicio web", "Web", error)
@@ -192,7 +184,7 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
             }
 
             if(success==0){
-                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
+                val toast = Toast.makeText(getActivity(), "No hay pendientes", Toast.LENGTH_LONG)
                 toast.show()
             }
         }, { error ->
@@ -238,7 +230,7 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
                 { response: JSONObject? ->
                     val success = response?.getInt("success")
 
-                    val toast = Toast.makeText(getActivity(), "Registro Exitoso", Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(getActivity(), "Publicacion exitosa", Toast.LENGTH_LONG)
                     toast.show()
                 },
                 { error ->

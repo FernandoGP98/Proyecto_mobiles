@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         }else{
             val alertDialog3 =
                 AlertDialog.Builder(this, R.style.Alert)
-            alertDialog3.setMessage("Correo o contraseña incorrecto")
+            alertDialog3.setMessage("Usuario no encontra, verifique sus datos")
                 .setCancelable(false)
                 .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
                     dialog.cancel()
@@ -139,6 +139,16 @@ class MainActivity : AppCompatActivity() {
                 ses.saveRol(usuario.getInt("rol_id"))
                 ses.saveID(usuario.getInt("id"))
                 ses.saveFoto(usuario.getString("foto"))
+
+
+                /*BUSCAR EL USUARIO EN LA LISTA OFFLINE, SI NO EXISTE AGREGARLO*/
+                val usDao = RoomAppDB.getAppDatabase(this)?.usuarioDAO()
+                val List = usDao?.usuarioGetAll(correo, pass)
+                val sb = StringBuffer()
+                if(List.isNullOrEmpty()) {
+                    val usEntity = UsuarioEntity(ses.getID(), ses.getName(), ses.getMail(), ses.getPass(), ses.getRol())
+                    val id = usDao?.usuarioRegistrar(usEntity)
+                }
 
                 val toast = Toast.makeText(this, "Bienvenido "+usuario.getString("id"), Toast.LENGTH_LONG)
                 toast.show()

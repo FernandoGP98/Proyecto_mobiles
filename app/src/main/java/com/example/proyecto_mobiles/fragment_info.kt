@@ -145,14 +145,6 @@ class fragment_info : Fragment(), OnMapReadyCallback {
                 calificacionDB.add(calificacionBBB.toDouble())
 
             }
-
-            val toast = Toast.makeText(getActivity(), "resultado:" +averageFav, Toast.LENGTH_LONG)
-            toast.show()
-
-            if(success==0){
-                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
-                toast.show()
-            }
         }, { error ->
             error.printStackTrace()
             Log.e("Servicio web", "Web", error)
@@ -199,7 +191,7 @@ class fragment_info : Fragment(), OnMapReadyCallback {
             }
 
             if(success==0){
-                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
+                val toast = Toast.makeText(getActivity(), "No hay restaurantes", Toast.LENGTH_LONG)
                 toast.show()
             }
         }, { error ->
@@ -254,12 +246,25 @@ class fragment_info : Fragment(), OnMapReadyCallback {
                 if(success==1 ){
                     val favDao= RoomAppDB.getAppDatabase(requireActivity())?.favoritosDAO()
                     val favEntity = FavoritosEntity(0, nombreL.text.toString(), descripcionL.text.toString(),
-                        "0","0", ses.getID())
+                        x.toString(),y.toString(), ses.getID())
                     val id = favDao?.favoritosRegistrar(favEntity)
-                    val toast = Toast.makeText(getActivity(), "Favorito Guardado", Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(getActivity(), "Se guardo como favorito", Toast.LENGTH_LONG)
                     toast.show()
                 }else if(success==0){
-                    val toast = Toast.makeText(getActivity(), "Favorito Borrado", Toast.LENGTH_LONG)
+                    val favDao = RoomAppDB.getAppDatabase(requireActivity())?.favoritosDAO()
+                    val fav = favDao?.favoritosGetById(ses.getID())
+
+                    val sb = StringBuffer()
+                    if(!fav.isNullOrEmpty()) {
+                        fav?.forEach {
+                            if(it.id==ResID){
+                                favDao.favoritosDelete(it)
+                            }
+                        }
+                    }
+
+
+                    val toast = Toast.makeText(getActivity(), "Eliminado como favorito", Toast.LENGTH_LONG)
                     toast.show()
                 }
             }, { error ->
@@ -308,8 +313,7 @@ class fragment_info : Fragment(), OnMapReadyCallback {
                 //Handler().postDelayed({load.dismissDialog()}, 6000)
                 val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/ComentarioRegistro",body,{
                         response: JSONObject?->
-                    val toast = Toast.makeText(getActivity(), "Registro Exitoso", Toast.LENGTH_LONG)
-                    toast.show()
+
                 }, { error ->
                     error.printStackTrace()
                     Log.e("Servicio web", "Web", error)
@@ -413,13 +417,6 @@ class fragment_info : Fragment(), OnMapReadyCallback {
 
             }
 
-            if(success==1 ){
-                val toast = Toast.makeText(getActivity(), "cargo Lista", Toast.LENGTH_LONG)
-                toast.show()
-            }else if(success==0){
-                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
-                toast.show()
-            }
         }, { error ->
             error.printStackTrace()
             Log.e("Servicio web", "Web", error)
@@ -447,7 +444,7 @@ class fragment_info : Fragment(), OnMapReadyCallback {
 
         val pos = LatLng(x,y)
 
-        map?.addMarker(MarkerOptions().position(pos).title("hola"))
+        map?.addMarker(MarkerOptions().position(pos).title(nombreLocal))
         map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
 
 }

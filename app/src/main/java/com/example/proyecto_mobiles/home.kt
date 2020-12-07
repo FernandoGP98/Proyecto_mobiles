@@ -79,23 +79,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         nav_view.setNavigationItemSelectedListener(this)
 
 
-        if(checkInternet.isOnline()){
-            fragmentHome = fragment_home()
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragmentHome)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit()
-            search = findViewById(R.id.sv_BuscarGeneral)
-        }else{
-            fragmentFavoritosOff = fragment_favoritos_off()
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragmentFavoritosOff)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit()
-            search = findViewById(R.id.sv_BuscarGeneral)
-        }
+
 
         this.sv_BuscarGeneral.setOnQueryTextListener(this)
 
@@ -120,10 +104,13 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
 
         navView.setNavigationItemSelectedListener(this)
         var menu:Menu = navView.menu
+        var navperfil: MenuItem = menu.findItem(R.id.nav_profile)
+        var misLocales : MenuItem = menu.findItem(R.id.nav_mislocales)
+        var favs:MenuItem = menu.findItem(R.id.nav_favoritos)
         var regDUenios:MenuItem = menu.findItem(R.id.nav_registrarDuenio)
         var verPendientes:MenuItem = menu.findItem(R.id.nav_porPublicar)
         var registrarLocal: MenuItem = menu.findItem(R.id.nav_nuevoLocal)
-        var misLocales : MenuItem = menu.findItem((R.id.nav_mislocales))
+        var eliminarCuenta:MenuItem= menu.findItem(R.id.nav_eliminarCuenta)
         if(ses.getRol()!=1){
             regDUenios.setVisible(false)
             verPendientes.setVisible(false)
@@ -131,6 +118,35 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         if(ses.getRol()==3){
             registrarLocal.setVisible(false)
             misLocales.setVisible(false)
+        }
+
+        if(checkInternet.isOnline()){
+            fragmentHome = fragment_home()
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragmentHome)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit()
+            search = findViewById(R.id.sv_BuscarGeneral)
+        }else{
+            fragmentFavoritosOff = fragment_favoritos_off()
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragmentFavoritosOff)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit()
+            val actionBar = supportActionBar
+            actionBar?.title = "Favoritos"
+            search = findViewById(R.id.sv_BuscarGeneral)
+            search.cambiaVisibility(false)
+
+            navperfil.setVisible(false)
+            misLocales.setVisible(false)
+            favs.setVisible(false)
+            verPendientes.setVisible(false)
+            registrarLocal.setVisible(false)
+            regDUenios.setVisible(false)
+            eliminarCuenta.setVisible(false)
         }
     }
 
@@ -154,15 +170,27 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
             R.id.nav_home ->{
-                fragmentHome = fragment_home()
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragmentHome)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit()
-                val actionBar = supportActionBar
-                actionBar?.title= "Principal"
-                search.cambiaVisibility(true)
+                if(checkInternet.isOnline()) {
+                    fragmentHome = fragment_home()
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragmentHome)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit()
+                    val actionBar = supportActionBar
+                    actionBar?.title = "Principal"
+                    search.cambiaVisibility(true)
+                }else{
+                    fragmentFavoritosOff = fragment_favoritos_off()
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragmentFavoritosOff)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit()
+                    val actionBar = supportActionBar
+                    actionBar?.title = "Favoritos"
+                    search.cambiaVisibility(false)
+                }
             }
             R.id.nav_profile ->{
                 val intent = Intent (this, perfil_configuracion::class.java)

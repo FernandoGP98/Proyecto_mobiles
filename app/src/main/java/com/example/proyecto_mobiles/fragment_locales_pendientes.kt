@@ -142,11 +142,8 @@ class fragment_locales_pendientes : Fragment() {
 
             }
 
-            if(success==1 ){
-                val toast = Toast.makeText(getActivity(), "cargo Lista", Toast.LENGTH_LONG)
-                toast.show()
-            }else if(success==0){
-                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
+           if(success==0){
+                val toast = Toast.makeText(getActivity(), "No hay restaurantes pendientes", Toast.LENGTH_LONG)
                 toast.show()
             }
         }, { error ->
