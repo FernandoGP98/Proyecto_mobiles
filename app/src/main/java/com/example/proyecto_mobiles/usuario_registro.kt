@@ -68,34 +68,51 @@ class usuario_registro : AppCompatActivity() {
                 alert.show()
             } else {
                 if('@' in correo) {
-                    if (contrasenaV1 != contrasenaV2) {
+                    if (contrasenaV1.length >= 8){
+                        if (contrasenaV1 != contrasenaV2) {
 
-                        dialogBuilder = AlertDialog.Builder(this, R.style.Alert)
-                        dialogBuilder.setMessage("La contraseña debe coincidir")
-                            .setCancelable(false)
-                            .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
-                                dialog.cancel()
-                            })
-                        val alert = dialogBuilder.create()
-                        alert.setTitle("ERROR")
-                        alert.show()
+                            dialogBuilder = AlertDialog.Builder(this, R.style.Alert)
+                            dialogBuilder.setMessage("La contraseña debe coincidir")
+                                .setCancelable(false)
+                                .setNegativeButton(
+                                    "OK",
+                                    DialogInterface.OnClickListener { dialog, id ->
+                                        dialog.cancel()
+                                    })
+                            val alert = dialogBuilder.create()
+                            alert.setTitle("ERROR")
+                            alert.show()
 
-                        Tcontrasenav1.setText("")
-                        Tcontrasenav2.setText("")
-                    } else {
-                        contrasenaFinal = contrasenaV1
-                        println("the value is $contrasenaFinal")
-                        currentTimestamp = System.currentTimeMillis()
-                        UsuarioRegistro(correo, contrasenaV1)
-                        dialogBuilder.setMessage("Registro Completo")
+                            Tcontrasenav1.setText("")
+                            Tcontrasenav2.setText("")
+                        } else {
+                            contrasenaFinal = contrasenaV1
+                            println("the value is $contrasenaFinal")
+                            currentTimestamp = System.currentTimeMillis()
+                            UsuarioRegistro(correo, contrasenaV1)
+                            dialogBuilder.setMessage("Registro Completo")
+                                .setCancelable(false)
+                                .setNegativeButton(
+                                    "OK",
+                                    DialogInterface.OnClickListener { dialog, id ->
+                                        //closeKeyboard()
+                                        finish()
+                                        irHome()
+                                    })
+                            val alert = dialogBuilder.create()
+                            alert.setTitle("Exito")
+                            alert.show()
+                        }
+                    }else{
+                        dialogBuilder.setMessage("Ingrese una contraseña de mas 8 caracateres")
                             .setCancelable(false)
-                            .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
-                                //closeKeyboard()
-                                finish()
-                                irHome()
-                            })
+                            .setNegativeButton(
+                                "OK",
+                                DialogInterface.OnClickListener { dialog, id ->
+                                    dialog.cancel()
+                                })
                         val alert = dialogBuilder.create()
-                        alert.setTitle("Exito")
+                        alert.setTitle("Error")
                         alert.show()
                     }
                 }else{
@@ -147,8 +164,6 @@ class usuario_registro : AppCompatActivity() {
                 val usDao=RoomAppDB.getAppDatabase(this)?.usuarioDAO()
                 val usEntity = UsuarioEntity(ses.getID(), ses.getName(), ses.getMail(), ses.getPass(), ses.getRol())
                 val id = usDao?.usuarioRegistrar(usEntity)
-                val toast = Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_SHORT)
-                toast.show()
             }
 
         }, { error ->

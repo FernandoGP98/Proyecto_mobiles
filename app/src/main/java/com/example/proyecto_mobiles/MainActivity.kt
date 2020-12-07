@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
     fun getUsuarioOff(correo: String, pass: String){
         val usDao = RoomAppDB.getAppDatabase(this)?.usuarioDAO()
-        val List = usDao?.usuarioGetAll(correo, pass)
+        val List = usDao?.usuarioGetAll(correo)
         val sb = StringBuffer()
         if(!List.isNullOrEmpty()) {
             List?.forEach {
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
 
                 /*BUSCAR EL USUARIO EN LA LISTA OFFLINE, SI NO EXISTE AGREGARLO*/
                 val usDao = RoomAppDB.getAppDatabase(this)?.usuarioDAO()
-                val List = usDao?.usuarioGetAll(correo, pass)
+                val List = usDao?.usuarioGetAll(correo)
                 val sb = StringBuffer()
                 if(List.isNullOrEmpty()) {
                     val usEntity = UsuarioEntity(ses.getID(), ses.getName(), ses.getMail(), ses.getPass(), ses.getRol())

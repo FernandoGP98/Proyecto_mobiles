@@ -156,10 +156,77 @@ class perfil_configuracion : AppCompatActivity() {
                 alert.setTitle("ERROR")
                 alert.show()
             }else {
-                if (contra1N != contra2N) {
+                if(contra1N.length>=8) {
+                    if (contra1N != contra2N) {
+                        val alertDialog3 =
+                            AlertDialog.Builder(this, R.style.Alert)
+                        alertDialog3.setMessage("La contraseña debe coincidir")
+                            .setCancelable(false)
+                            .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
+                                dialog.cancel()
+                            })
+                        val alert = alertDialog3.create()
+                        alert.setTitle("ERROR")
+                        alert.show()
+                    } else {
+                        contrasenaFinalNueva = contra1N
+
+                        val queue = Volley.newRequestQueue(this)
+                        val body = JSONObject()
+                        body.put("password", contrasenaFinalNueva)
+                        body.put("id", ses.getID())
+
+                        val requ = JsonObjectRequest(
+                            Request.Method.POST,
+                            "https://restaurantespia.herokuapp.com/UsuarioUpdatePass",
+                            body,
+                            { response: JSONObject? ->
+                                val success = response?.getInt("success")
+                                if (success == 1) {
+                                    val usuario = response.getJSONObject("usuario")
+                                    ses.savePass(usuario.getString("password"))
+
+                                    val toast = Toast.makeText(
+                                        this,
+                                        "Contraseña Actualizado",
+                                        Toast.LENGTH_LONG
+                                    )
+                                    toast.show()
+                                } else {
+                                    val toast = Toast.makeText(
+                                        this,
+                                        "Error de actualizacion",
+                                        Toast.LENGTH_LONG
+                                    )
+                                    toast.show()
+                                }
+
+                            },
+                            { error ->
+                                error.printStackTrace()
+                                Log.e("Servicio web", "Web", error)
+                                if (error.toString() == "com.android.volley.ServerError") {
+                                    val toast = Toast.makeText(
+                                        this,
+                                        "Error del servidor",
+                                        Toast.LENGTH_LONG
+                                    )
+                                    toast.show()
+                                }
+                            })
+                        requ.setRetryPolicy(
+                            DefaultRetryPolicy(
+                                5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                            )
+                        )
+                        queue.add(requ)
+                    }
+                }else{
                     val alertDialog3 =
                         AlertDialog.Builder(this, R.style.Alert)
-                    alertDialog3.setMessage("La contraseña debe coincidir")
+                    alertDialog3.setMessage("Ingrese una contraseña de mas 8 caracateres")
                         .setCancelable(false)
                         .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
                             dialog.cancel()
@@ -167,48 +234,6 @@ class perfil_configuracion : AppCompatActivity() {
                     val alert = alertDialog3.create()
                     alert.setTitle("ERROR")
                     alert.show()
-                } else {
-                    contrasenaFinalNueva = contra1N
-
-                    val queue = Volley.newRequestQueue(this)
-                    val body = JSONObject()
-                    body.put("password", contrasenaFinalNueva)
-                    body.put("id", ses.getID())
-
-                    val requ = JsonObjectRequest(
-                        Request.Method.POST,
-                        "https://restaurantespia.herokuapp.com/UsuarioUpdatePass",
-                        body,
-                        { response: JSONObject? ->
-                            val success = response?.getInt("success")
-                            if(success==1) {
-                                val usuario = response.getJSONObject("usuario")
-                                ses.savePass(usuario.getString("password"))
-
-                                val toast = Toast.makeText(this, "Contraseña Actualizado", Toast.LENGTH_LONG)
-                                toast.show()
-                            }else{
-                                val toast = Toast.makeText(this, "Error de actualizacion", Toast.LENGTH_LONG)
-                                toast.show()
-                            }
-
-                        },
-                        { error ->
-                            error.printStackTrace()
-                            Log.e("Servicio web", "Web", error)
-                            if (error.toString() == "com.android.volley.ServerError") {
-                                val toast = Toast.makeText(this, "Error del servidor", Toast.LENGTH_LONG)
-                                toast.show()
-                            }
-                        })
-                    requ.setRetryPolicy(
-                        DefaultRetryPolicy(
-                            5000,
-                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-                        )
-                    )
-                    queue.add(requ)
                 }
             }
         }

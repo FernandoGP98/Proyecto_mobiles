@@ -5,8 +5,8 @@ import androidx.room.*
 @Dao
 interface UsuarioDAO {
 
-    @Query("SELECT * FROM usuarioOff WHERE email = :correo AND password = :pass")
-    fun usuarioGetAll(correo:String, pass:String):List<UsuarioEntity>?
+    @Query("SELECT * FROM usuarioOff WHERE email = :correo")
+    fun usuarioGetAll(correo:String):List<UsuarioEntity>?
 
     @Insert
     fun usuarioRegistrar(usuarioEntity: UsuarioEntity?)
