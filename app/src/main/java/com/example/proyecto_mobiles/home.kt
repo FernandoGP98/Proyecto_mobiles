@@ -179,7 +179,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                         .commit()
                     val actionBar = supportActionBar
                     actionBar?.title = "Principal"
-                    search.cambiaVisibility(true)
+                    //search.cambiaVisibility(true)
                 }else{
                     fragmentFavoritosOff = fragment_favoritos_off()
                     supportFragmentManager
@@ -189,7 +189,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                         .commit()
                     val actionBar = supportActionBar
                     actionBar?.title = "Favoritos"
-                    search.cambiaVisibility(false)
+                    //search.cambiaVisibility(false)
                 }
             }
             R.id.nav_profile ->{
@@ -216,7 +216,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .commit()
                 val actionBar = supportActionBar
                 actionBar?.title= "Mis Locales"
-                search.cambiaVisibility(true)
+                //search.cambiaVisibility(true)
             }
             R.id.nav_favoritos->{
                 fragmentFavoritos = fragment_favoritos()
@@ -228,7 +228,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .commit()
                 val actionBar = supportActionBar
                 actionBar?.title= "Favoritos"
-                search.cambiaVisibility(true)
+                //search.cambiaVisibility(true)
             }
             R.id.nav_porPublicar ->{
                 fragmentLocalesPendientes = fragment_locales_pendientes()
@@ -240,7 +240,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .commit()
                 val actionBar = supportActionBar
                 actionBar?.title= "Pendientes"
-                search.cambiaVisibility(true)
+                //search.cambiaVisibility(true)
             }
             R.id.nav_registrarDuenio->{
                 fragmentUsuarioRegistroDueno = fragment_usuario_registro_dueno()
@@ -252,7 +252,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                     .commit()
                 val actionBar = supportActionBar
                 actionBar?.title= "Registrar dueño"
-                search.cambiaVisibility(false)
+                //.cambiaVisibility(false)
             }
             R.id.nav_nuevoLocal->{
                 val intent = Intent (this, acivity_localNuevo::class.java)

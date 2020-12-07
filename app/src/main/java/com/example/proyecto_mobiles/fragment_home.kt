@@ -221,11 +221,8 @@ class fragment_home : Fragment(){
                 val success = response?.getInt("success")
 
                 exampleList.clear()
-                NombreLocalDB.clear()
-                DescripcionLocalDB.clear()
                 DescripcionLocalDB.clear()
                 NombreLocalDB.clear()
-                DescripcionLocalDB.clear()
                 imagenesDB.clear()
                 imagenesDB2.clear()
                 imagenesDB3.clear()
