@@ -94,17 +94,48 @@ class perfil_configuracion : AppCompatActivity() {
                 alert.setTitle("ERROR")
                 alert.show()
             }else{
-                val alertDialog3 =
-                    AlertDialog.Builder(this, R.style.Alert)
-                alertDialog3.setMessage("Nombre Actualizado")
-                    .setCancelable(false)
-                    .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
-                        dialog.cancel()
-                    })
-                val alert = alertDialog3.create()
-                alert.setTitle("EXITO")
-                alert.show()
+
                 nuevoNombre = nombreN
+
+                val queue = Volley.newRequestQueue(this)
+                val body = JSONObject()
+                body.put("nombre", nuevoNombre)
+                body.put("id", ses.getID())
+
+                val requ = JsonObjectRequest(
+                    Request.Method.POST,
+                    "https://restaurantespia.herokuapp.com/UsuarioUpdateNombre",
+                    body,
+                    { response: JSONObject? ->
+                        val success = response?.getInt("success")
+                        if(success==1) {
+                            val usuario = response.getJSONObject("usuario")
+                            ses.saveName(usuario.getString("nombre"))
+
+                            val toast = Toast.makeText(this, "Nombre Actualizado", Toast.LENGTH_LONG)
+                            toast.show()
+                        }else{
+                            val toast = Toast.makeText(this, "Error de actualizacion", Toast.LENGTH_LONG)
+                            toast.show()
+                        }
+
+                    },
+                    { error ->
+                        error.printStackTrace()
+                        Log.e("Servicio web", "Web", error)
+                        if (error.toString() == "com.android.volley.ServerError") {
+                            val toast = Toast.makeText(this, "Error del servidor", Toast.LENGTH_LONG)
+                            toast.show()
+                        }
+                    })
+                requ.setRetryPolicy(
+                    DefaultRetryPolicy(
+                        5000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                    )
+                )
+                queue.add(requ)
             }
         }
         btn_contras.setOnClickListener {
