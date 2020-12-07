@@ -191,7 +191,7 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
             body.put("usuario_id", userid)
             body.put("latitud", lat)
             body.put("longitud", lon)
-            body.put("estado", 2)
+            body.put("estado", 1)
             body.put("img1", imgurUrl)
             body.put("img2", imgurUrl2)
             body.put("img3", imgurUrl3)
