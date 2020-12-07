@@ -18,11 +18,8 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.proyecto_mobiles.adapter.ComentariosAdapter
-import com.example.proyecto_mobiles.db.FavoritosEntity
-import com.example.proyecto_mobiles.db.RoomAppDB
 import com.example.proyecto_mobiles.model.ComentariosLista
 import com.example.proyecto_mobiles.model.ItemList
-import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
@@ -31,7 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import com.synnapps.carouselview.CarouselView
 import com.synnapps.carouselview.ImageListener
-import kotlinx.android.synthetic.main.fragment_info.*
+import kotlinx.android.synthetic.main.fragment_info_pendiente.*
 import org.json.JSONObject
 import kotlin.random.Random
 
@@ -46,7 +43,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [fragment_info.newInstance] factory method to
  * create an instance of this fragment.
  */
-class fragment_info : Fragment(), OnMapReadyCallback {
+class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -65,8 +62,6 @@ class fragment_info : Fragment(), OnMapReadyCallback {
     var imagenLocal3: String = ""
     var espera = false
     var averageFav:Double = 0.0
-    var x:Double = 0.0
-    var y:Double = 0.0
 
     var CalificacionesDB = arrayListOf<Double>(
     )
@@ -99,7 +94,7 @@ class fragment_info : Fragment(), OnMapReadyCallback {
     }
 
     companion object {
-        fun newInstance() = fragment_info()
+        fun newInstance() = fragment_info_pendiente()
     }
 
     private lateinit var viewModel: FragmentComentariosViewModel
@@ -110,7 +105,7 @@ class fragment_info : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        viewOfLayout = inflater!!.inflate(R.layout.fragment_info, container, false)
+        viewOfLayout = inflater!!.inflate(R.layout.fragment_info_pendiente, container, false)
         otraView = inflater!!.inflate(R.layout.activity_comentarios, container, false)
 
 
@@ -170,7 +165,7 @@ class fragment_info : Fragment(), OnMapReadyCallback {
         val parametros = JSONObject()
         //load.startLoadingDialog()
         //Handler().postDelayed({load.dismissDialog()}, 6000)
-        val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/RestaurantesGetAllPublicados",parametros,{
+        val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/RestaurantesGetAllPendientes",parametros,{
                 response: JSONObject?->
             val usArray = response?.getJSONArray("restaurantes")
             val success = response?.getInt("success")
@@ -184,8 +179,6 @@ class fragment_info : Fragment(), OnMapReadyCallback {
                     imagenLocal1 = item.getString("img1")
                     imagenLocal2 = item.getString("img2")
                     imagenLocal3 = item.getString("img3")
-                    x = item.getString("latitud").toDouble()
-                    y = item.getString("longitud").toDouble()
                     //calificacionBBB = item.getString("calificacion")
                     ResID = item.getString("id").toInt()
                     nombreL.setText(nombreLocal)
@@ -231,102 +224,41 @@ class fragment_info : Fragment(), OnMapReadyCallback {
 
         /*------------VARIABLES PARA LLENAR LA VIEW------------*/
 
-
-        /*------------VARIABLES QUE SE OBTIENEN------------*/
-        var valorLocal: Float
-        var valorComentario: Double
-        var comentario: String
-
         buttonPalFav.setOnClickListener {
-
-            val userid2:Int = usuarioSesion.ses.getID()
-
             val queue = Volley.newRequestQueue(getActivity())
             val body = JSONObject()
-            body.put("restaurante_id", ResID)
-            body.put("usuario_id", userid2)
+            body.put("id", ResID)
+
             //load.startLoadingDialog()
             //Handler().postDelayed({load.dismissDialog()}, 6000)
-            val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/FavoritoRegistrar",body,{
-                    response: JSONObject?->
-                val success = response?.getInt("success")
+            val requ = JsonObjectRequest(
+                Request.Method.POST,
+                "https://restaurantespia.herokuapp.com/RestaurantePublicar",
+                body,
+                { response: JSONObject? ->
+                    val success = response?.getInt("success")
 
-                if(success==1 ){
-                    val favDao= RoomAppDB.getAppDatabase(requireActivity())?.favoritosDAO()
-                    val favEntity = FavoritosEntity(0, nombreL.text.toString(), descripcionL.text.toString(),
-                        "0","0", ses.getID())
-                    val id = favDao?.favoritosRegistrar(favEntity)
-                    val toast = Toast.makeText(getActivity(), "Favorito Guardado", Toast.LENGTH_LONG)
-                    toast.show()
-                }else if(success==0){
-                    val toast = Toast.makeText(getActivity(), "Favorito Borrado", Toast.LENGTH_LONG)
-                    toast.show()
-                }
-            }, { error ->
-                error.printStackTrace()
-                Log.e("Servicio web", "Web", error)
-                if(error.toString()=="com.android.volley.ServerError"){
-                    val toast = Toast.makeText(getActivity(), "Error del servidor", Toast.LENGTH_LONG)
-                    toast.show()
-                }
-            })
-            requ.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
-            queue.add(requ)
-        }
-
-        buttonComentario.setOnClickListener {
-
-            var comentarioL: String = editTextTextMultiLineComentario.text.toString()
-            valorComentario = rate2L.rating.toDouble()
-
-            if (comentarioL.isEmpty() || valorComentario == 0.0 ) {
-                val alertDialog3 =
-                    AlertDialog.Builder(requireActivity())
-                alertDialog3.setMessage("Agregar Comentario y Calificaion")
-                    .setCancelable(false)
-                    .setNegativeButton("OK", DialogInterface.OnClickListener { dialog, id ->
-                        dialog.cancel()
-                    })
-                val alert = alertDialog3.create()
-                alert.setTitle("ERROR")
-                alert.show()
-            } else {
-                comentarioLL.setText("")
-                comentario = comentarioL                                                             ///Variable con el Comentario AQUI SE MANDA EL COMENTARIO A GUARDAR
-                //editTextTextMultiLineComentario.text.clear()
-
-                ///////////////////////////////////////
-                val userid:Int = usuarioSesion.ses.getID()
-
-                val queue = Volley.newRequestQueue(getActivity())
-                val body = JSONObject()
-                body.put("texto", comentario)
-                body.put("calificacion", valorComentario)
-                body.put("restaurante_id", ResID)
-                body.put("usuario_id", userid)
-                //load.startLoadingDialog()
-                //Handler().postDelayed({load.dismissDialog()}, 6000)
-                val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/ComentarioRegistro",body,{
-                        response: JSONObject?->
                     val toast = Toast.makeText(getActivity(), "Registro Exitoso", Toast.LENGTH_LONG)
                     toast.show()
-                }, { error ->
+                },
+                { error ->
                     error.printStackTrace()
                     Log.e("Servicio web", "Web", error)
-                    if(error.toString()=="com.android.volley.ServerError"){
+                    if (error.toString() == "com.android.volley.ServerError") {
                         val toast = Toast.makeText(getActivity(), "Error del servidor", Toast.LENGTH_LONG)
                         toast.show()
                     }
                 })
-                requ.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
-                queue.add(requ)
-
-                /////////////////////////////////////////////
-
-                insertItem(otraView, comentario, valorComentario)
-                index += 1
-            }
+            requ.setRetryPolicy(
+                DefaultRetryPolicy(
+                    5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                )
+            )
+            queue.add(requ)
         }
+        /*------------VARIABLES QUE SE OBTIENEN------------*/
 
         return viewOfLayout
     }
@@ -345,8 +277,6 @@ class fragment_info : Fragment(), OnMapReadyCallback {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-
-        traemelosComentarios()
 
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(FragmentComentariosViewModel::class.java)
@@ -380,58 +310,6 @@ class fragment_info : Fragment(), OnMapReadyCallback {
         return list
     }
 
-    private fun traemelosComentarios(){
-
-        exampleList.clear()
-        textoDB.clear()
-        calificacionDB.clear()
-
-        val queue = Volley.newRequestQueue(getActivity())
-        val parametros = JSONObject()
-        parametros.put("restaurante_id", nombreRestaurante)
-        //load.startLoadingDialog()
-        //Handler().postDelayed({load.dismissDialog()}, 6000)
-        val requ = JsonObjectRequest(Request.Method.POST, "https://restaurantespia.herokuapp.com/ComentarioGetByRestauranteId",parametros,{
-                response: JSONObject?->
-            val usArray = response?.getJSONArray("comentarios")
-            val success = response?.getInt("success")
-
-            for (i in 0..(usArray!!.length() - 1)) {
-                val item = usArray!!.getJSONObject(i)
-                val texto = item.getString("texto")
-                val descripc = item.getString("calificacion")
-                textoDB.add(texto)
-                calificacionDB.add(descripc.toDouble())
-            }
-
-            for (i in 0..(usArray!!.length() - 1)) {
-                val newItem =
-                    ComentariosLista(textoDB[i], calificacionDB[i])
-                exampleList.add(i, newItem)
-
-                adapter.notifyDataSetChanged()
-
-            }
-
-            if(success==1 ){
-                val toast = Toast.makeText(getActivity(), "cargo Lista", Toast.LENGTH_LONG)
-                toast.show()
-            }else if(success==0){
-                val toast = Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
-                toast.show()
-            }
-        }, { error ->
-            error.printStackTrace()
-            Log.e("Servicio web", "Web", error)
-            if(error.toString()=="com.android.volley.ServerError"){
-                val toast = Toast.makeText(getActivity(), "Error del servidor", Toast.LENGTH_LONG)
-                toast.show()
-            }
-        })
-        requ.setRetryPolicy(DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
-        queue.add(requ)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -445,10 +323,10 @@ class fragment_info : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap?) {
         val map = googleMap
 
-        val pos = LatLng(x,y)
+        val pos = LatLng(25.36493,-100.15434)
 
         map?.addMarker(MarkerOptions().position(pos).title("hola"))
-        map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
+        map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10f))
 
 }
 
