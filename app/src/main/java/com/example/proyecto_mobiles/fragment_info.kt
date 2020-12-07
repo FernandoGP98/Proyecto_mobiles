@@ -33,6 +33,7 @@ import com.synnapps.carouselview.CarouselView
 import com.synnapps.carouselview.ImageListener
 import kotlinx.android.synthetic.main.fragment_info.*
 import org.json.JSONObject
+import android.os.Handler;
 import kotlin.random.Random
 
 
@@ -89,6 +90,7 @@ class fragment_info : Fragment(), OnMapReadyCallback {
     lateinit var googleMap: GoogleMap
 
     lateinit var mapView: MapView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -440,13 +442,21 @@ class fragment_info : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
-        val map = googleMap
 
-        val pos = LatLng(x,y)
+        val handler = Handler()
+        handler.postDelayed({
 
-        map?.addMarker(MarkerOptions().position(pos).title(nombreLocal))
-        map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
+            val map = googleMap
+
+            val pos = LatLng(x,y)
+
+            map?.addMarker(MarkerOptions().position(pos).title(nombreLocal))
+            map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
+        }, 1000)
+
+
 
 }
+
 
 }
