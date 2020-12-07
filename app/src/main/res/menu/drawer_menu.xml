@@ -38,6 +38,10 @@
             android:id="@+id/nav_nuevoLocal"
             android:icon="@drawable/ic_agregar_caja"
             android:title="Nuevo local" />
+        <item
+            android:id="@+id/nav_eliminarFavoritos"
+            android:icon="@drawable/ic_cancel"
+            android:title="Eliminar favoritos" />
     </group>
 
     <item android:title="">

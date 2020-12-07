@@ -406,21 +406,12 @@ class acivity_editarLocal : AppCompatActivity(), OnMapReadyCallback {
             "https://restaurantespia.herokuapp.com/RestaurantesDeleteById",
             parametros2,
             { response: JSONObject? ->
-                val usArray = response?.getJSONArray("restaurantes")
                 val success = response?.getInt("success")
 
                 if (success == 1) {
-
-                    fragmentMislocales = fragment_mislocales()
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, fragmentMislocales)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .addToBackStack(null)
-                        .commit()
-
                     val toast = Toast.makeText(this, "Restaurante eliminado", Toast.LENGTH_LONG)
                     toast.show()
+                    finish()
                 } else if (success == 0) {
                     val toast = Toast.makeText(this, "No se pudo borrar el restaurante ", Toast.LENGTH_LONG)
                     toast.show()

@@ -11,6 +11,9 @@ interface FavoritosDAO {
     @Query("SELECT * FROM favoritosOff WHERE id = :rId")
     fun favoritosGetById(rId:Int):List<FavoritosEntity>?
 
+    @Query("DELETE FROM favoritosOff")
+    fun favoritosNuke();
+
     @Insert
     fun favoritosRegistrar(favorito: FavoritosEntity?)
 

@@ -27,6 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.proyecto_mobiles.adapter.FavoritosRecycler
 import com.example.proyecto_mobiles.adapter.RecyclerAdapter
+import com.example.proyecto_mobiles.db.RoomAppDB
 import com.example.proyecto_mobiles.model.ItemList
 import com.example.proyecto_mobiles.usuarioSesion.Companion.checkInternet
 import com.example.proyecto_mobiles.usuarioSesion.Companion.ses
@@ -110,6 +111,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         var verPendientes:MenuItem = menu.findItem(R.id.nav_porPublicar)
         var registrarLocal: MenuItem = menu.findItem(R.id.nav_nuevoLocal)
         var eliminarCuenta:MenuItem= menu.findItem(R.id.nav_eliminarCuenta)
+        var eliminarFavoritos:MenuItem = menu.findItem(R.id.nav_eliminarFavoritos)
         if(ses.getRol()!=1){
             regDUenios.setVisible(false)
             verPendientes.setVisible(false)
@@ -130,6 +132,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             searchText = findViewById(R.id.filtroAbuscar)
             searchText.cambiaVisibility(true)
             searchButton.cambiaVisibility(true)
+            eliminarFavoritos.setVisible(false)
             //search = findViewById(R.id.sv_BuscarGeneral)
         }else{
             fragmentFavoritosOff = fragment_favoritos_off()
@@ -150,6 +153,7 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             registrarLocal.setVisible(false)
             regDUenios.setVisible(false)
             eliminarCuenta.setVisible(false)
+            eliminarFavoritos.setVisible(true)
         }
     }
 
@@ -310,7 +314,25 @@ class home : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
                         dialog.cancel()
                     })
                 val alert = alertDialog3.create()
-                alert.setTitle("EXITO")
+                alert.setTitle("Eliminar")
+                alert.show()
+            }
+            R.id.nav_eliminarFavoritos->{
+                val alertDialog3 =
+                    AlertDialog.Builder(this, R.style.Alert)
+                alertDialog3.setMessage("¿Esta seguro que desea eliminar su cuenta?")
+                    .setCancelable(false)
+                    .setPositiveButton("Si", DialogInterface.OnClickListener{dialog, id->
+                        val favDao = RoomAppDB.getAppDatabase(this)?.favoritosDAO()
+                        favDao?.favoritosNuke()
+                        val toast = Toast.makeText(this, "Se eliminaron sus favoritos", Toast.LENGTH_SHORT)
+                        toast.show()
+                    })
+                    .setNegativeButton("No", DialogInterface.OnClickListener { dialog, id ->
+                        dialog.cancel()
+                    })
+                val alert = alertDialog3.create()
+                alert.setTitle("Eliminar")
                 alert.show()
             }
         }

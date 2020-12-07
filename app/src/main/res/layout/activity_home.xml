@@ -32,26 +32,33 @@
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
+                android:gravity="end"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/filtroAbuscar"
                     android:layout_width="137dp"
                     android:layout_height="match_parent"
+                    android:backgroundTint="@color/colorBack"
                     android:ems="10"
                     android:hint="Busca Tacos"
                     android:inputType="textPersonName"
+                    android:textAlignment="textEnd"
                     android:textColor="@color/colorText"
+                    android:textColorHint="#A8A3A3"
+                    android:textColorLink="@color/colorBack"
+                    android:textCursorDrawable="@null"
                     android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/buttonBusca"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:background="@color/colorBack"
                     android:text="Busca"
                     android:visibility="invisible" />
             </LinearLayout>
