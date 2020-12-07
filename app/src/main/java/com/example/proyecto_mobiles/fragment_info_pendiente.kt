@@ -62,6 +62,8 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
     var imagenLocal3: String = ""
     var espera = false
     var averageFav:Double = 0.0
+    var x:Double = 0.0
+    var y:Double = 0.0
 
     var CalificacionesDB = arrayListOf<Double>(
     )
@@ -171,6 +173,8 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
                     imagenLocal1 = item.getString("img1")
                     imagenLocal2 = item.getString("img2")
                     imagenLocal3 = item.getString("img3")
+                    x = item.getString("latitud").toDouble()
+                    y = item.getString("longitud").toDouble()
                     //calificacionBBB = item.getString("calificacion")
                     ResID = item.getString("id").toInt()
                     nombreL.setText(nombreLocal)
@@ -315,7 +319,7 @@ class fragment_info_pendiente : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap?) {
         val map = googleMap
 
-        val pos = LatLng(25.36493,-100.15434)
+        val pos = LatLng(x,y)
 
         map?.addMarker(MarkerOptions().position(pos).title("hola"))
         map?.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 10f))
