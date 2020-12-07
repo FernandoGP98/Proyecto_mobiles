@@ -209,7 +209,7 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
                         idNuevo = restaurante.getInt("id")
                     }
 
-                    val toast = Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(this, "Restaurante guardado", Toast.LENGTH_LONG)
                     toast.show()
                 },
                 { error ->
@@ -281,7 +281,7 @@ class acivity_localNuevo : AppCompatActivity(), OnMapReadyCallback {
                         idNuevo = restaurante.getInt("id")
                     }
 
-                    val toast = Toast.makeText(this, "Registro Exitoso", Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(this, "Borrador guardado", Toast.LENGTH_LONG)
                     toast.show()
                 },
                 { error ->
