@@ -24,22 +24,6 @@
             android:scaleY="0.5"
             android:isIndicator="true"/>
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="130dp"
-            android:layout_marginTop="5dp"
-            android:background="#00000000"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="#00000000"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
     </LinearLayout>
 
     <LinearLayout

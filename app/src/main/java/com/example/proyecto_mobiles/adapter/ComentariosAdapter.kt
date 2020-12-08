@@ -31,13 +31,6 @@ class ComentariosAdapter(private val comentariosLista: MutableList<ComentariosLi
         holder.txtComentario.text = currentItem.comentario
         holder.rateComentario.rating = currentItem.calificion.toFloat()
 
-        holder.deleteIMG.setOnClickListener {
-
-            comentariosLista.removeAt(holder.adapterPosition)
-            notifyItemRemoved(holder.adapterPosition)
-            //fragment_comentarios.prueba.test(item)
-        }
-
     }
 
     override fun getItemCount()= comentariosLista.size
@@ -45,7 +38,7 @@ class ComentariosAdapter(private val comentariosLista: MutableList<ComentariosLi
     class RecycleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtComentario: TextView = itemView.txt_comentario
         val rateComentario: RatingBar = itemView.ratingBar
-        val deleteIMG: ImageButton = itemView.imageButton2
+
     }
 
 }
